@@ -1,5 +1,7 @@
+import { BlogBoxStyles } from "./BlogBox.style";
+
 const BlogBox = ({ children }) => {
-  return <div className="rounded-xl border">{children}</div>;
+  return <div className={BlogBoxStyles()}>{children}</div>;
 };
 
 export default BlogBox;

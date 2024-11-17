@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Layout from "./components/layout/Layout";
-import { ThemeProvider } from "./components/theme-provider";
+import { ThemeProvider } from "./components/theme/theme-provider";
 
 const LazyHomePage = lazy(() => import("./pages/homePage/HomePage"));
 const LazyWritePage = lazy(() => import("./pages/write/WritePage"));

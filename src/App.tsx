@@ -8,6 +8,7 @@ const LazyHomePage = lazy(() => import("./pages/homePage/HomePage"));
 const LazyWritePage = lazy(() => import("./pages/write/WritePage"));
 const LazyAboutPage = lazy(() => import("./pages/about/AboutPage"));
 const LazyLoginPage = lazy(() => import("./pages/login/LoginPage"));
+const LazyRegisterPage = lazy(() => import("./pages/register/RegisterPage"));
 
 function App() {
   return (
@@ -46,6 +47,14 @@ function App() {
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <LazyLoginPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <LazyRegisterPage />
                 </Suspense>
               }
             />

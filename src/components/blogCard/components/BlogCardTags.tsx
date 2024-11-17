@@ -7,9 +7,7 @@ const BlogCardTags = ({ tagsArr }) => {
       {tagsArr?.map((tag, index) => {
         return (
           <Link to="" key={index}>
-            <Badge variant="default" color="black">
-              {tag}
-            </Badge>
+            <Badge variant="default">{tag}</Badge>
           </Link>
         );
       })}

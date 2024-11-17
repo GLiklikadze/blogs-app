@@ -9,12 +9,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import i18next from "i18next";
 
 type languagesObj = { code: string; name: string };
 
 const languages: languagesObj[] = [
-  { code: "en", name: "English" },
   { code: "ka", name: "ქართული" },
+  { code: "en", name: "English" },
 ];
 
 export default function LanguageSwitcher() {
@@ -22,8 +23,11 @@ export default function LanguageSwitcher() {
 
   const handleLanguageChange = (language: languagesObj) => {
     setCurrentLanguage(language);
-    // Here you would typically update the app's language setting
-    // For example: updateAppLanguage(language.code)
+    if (currentLanguage.code === "ka") {
+      i18next.changeLanguage("en");
+    } else {
+      i18next.changeLanguage("ka");
+    }
   };
 
   return (

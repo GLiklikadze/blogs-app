@@ -7,6 +7,11 @@ import { useTranslation, Trans } from "react-i18next";
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
+  const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
+    return isActive
+      ? " border-blue-500 font-semibold text-primary"
+      : "font-semibold text-gray-500 hover:text-primary";
+  };
   return (
     <header className="h-16 border-b border-primary">
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
@@ -14,11 +19,13 @@ const Header: React.FC = () => {
           <h1 className="text-2xl font-bold">BitBlogs</h1>
         </Link>
         <nav className="flex space-x-4">
-          <NavLink to="">{t("header-nav.nav-link-home")}</NavLink>
-          <NavLink to="write">
+          <NavLink className={getNavLinkClass} to="">
+            {t("header-nav.nav-link-home")}
+          </NavLink>
+          <NavLink className={getNavLinkClass} to="write">
             <Trans>header-nav.nav-link-write</Trans>
           </NavLink>
-          <NavLink to="about">
+          <NavLink className={getNavLinkClass} to="about">
             <Trans>header-nav.nav-link-about</Trans>
           </NavLink>
         </nav>

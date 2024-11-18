@@ -1,0 +1,11 @@
+{
+  "register-header": "Sign Up for BitBlogs",
+  "register-message": "Create your account to start blogging",
+  "register-name-label": "Name",
+  "register-email-label": "Email",
+  "register-password-label": "Password",
+  "register-confirm-password-label": "Confirm Password",
+  "sign-up-button": "Sign Up",
+  "sign-up-message": "Already have an account? ",
+  "log-in-link": "Log in"
+}

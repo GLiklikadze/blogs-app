@@ -1,0 +1,10 @@
+{
+  "login-header": "ავტორიზაცია",
+  "login-message": "შეიყვანეთ თქვენი მონაცემები ანგარიშზე წვდომისათვის",
+  "email-label": "ელ-ფოსტა",
+  "password-label": "პაროლი",
+  "login-button": "შესვლა",
+  "forgot-password": "დაგავიწყდათ პაროლი?",
+  "sing-up-label": "არ გაქვს ანგარიში? ",
+  "sing-up-link": "დარეგისტრირდი "
+}

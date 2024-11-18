@@ -1,0 +1,11 @@
+{
+  "register-header": "დარეგისტრირდით",
+  "register-message": "შექმენით თქვენი ანგარიში ბლოგის დასაწყებად",
+  "register-name-label": "სახელი",
+  "register-email-label": "ელ ფოსტა",
+  "register-password-label": "პაროლი",
+  "register-confirm-password-label": "გაიმეორე პაროლი",
+  "sign-up-button": "რეგისტრაცია",
+  "sign-up-message": "გაქვთ უკვე ანგარიში? ",
+  "log-in-link": "ავტორიზაცია"
+}

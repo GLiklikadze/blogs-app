@@ -16,8 +16,10 @@ import BlogCardInfo from "../homePage/components/BlogCardInfo/BlogCardInfo";
 import BlogCardContent from "../homePage/components/BlogCardContent/BlogCardContent";
 import BlogCardTags from "../homePage/components/BlogCardTags/BlogCardTags";
 import { blogsData, skillsData } from "@/data/blogs-data";
+import { useTranslation } from "react-i18next";
 
 export default function AuthorPage() {
+  const { t } = useTranslation();
   return (
     <div className="mx-auto max-w-4xl flex-grow px-4 py-8">
       <Card className="mb-12 flex flex-col items-center rounded-lg bg-card p-8 shadow-lg md:flex-row md:items-start">
@@ -25,15 +27,12 @@ export default function AuthorPage() {
           <Avatar className="h-32 w-32 border-4 border-primary">
             <AvatarFallback className="text-2xl">JD</AvatarFallback>
           </Avatar>
-
           <div className="flex-1 space-y-4">
             <h1 className="text-3xl font-bold">Jane Doe</h1>
-
             <p className="text-muted-foreground">
               Tech enthusiast, software engineer, and avid blogger. Passionate
               about AI, web development, and the future of technology.
             </p>
-
             <div className="flex gap-2">
               <Button variant="outline" size="icon" className="rounded-full">
                 <Twitter className="h-4 w-4" />
@@ -52,15 +51,14 @@ export default function AuthorPage() {
                 <span className="sr-only">GitHub</span>
               </Button>
             </div>
-
             <div className="flex gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span>1234 Followers</span>
+                <span>1234 {t("author-page.author-followers")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
-                <span>567 Following</span>
+                <span>567 {t("author-page.author-following")}</span>
               </div>
             </div>
           </div>
@@ -68,9 +66,13 @@ export default function AuthorPage() {
       </Card>
       <div>
         <Tabs defaultValue="articles">
-          <TabsList className="mb-8 grid h-9 w-full grid-cols-2 items-center justify-center rounded-lg bg-neutral-200 p-1 text-muted-foreground">
-            <TabsTrigger value="articles">Articles</TabsTrigger>
-            <TabsTrigger value="about">About</TabsTrigger>
+          <TabsList className="light:bg-neutral-200 mb-8 grid h-9 w-full grid-cols-2 items-center justify-center rounded-lg p-1 text-muted-foreground">
+            <TabsTrigger value="articles">
+              {t("author-page.tab-articles")}
+            </TabsTrigger>
+            <TabsTrigger value="about">
+              {t("author-page.tab-about")}
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="articles">
             <section className="space-y-8">
@@ -119,7 +121,7 @@ export default function AuthorPage() {
               <CardHeader className="">
                 {" "}
                 <CardTitle className="text-s font-semibold">
-                  About Jane Doe
+                  {t("author-page.tab-about")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -132,7 +134,9 @@ export default function AuthorPage() {
                   open-source projects.
                 </CardDescription>
                 <CardHeader className="pl-0">
-                  <CardTitle className="font-semibold">Skills</CardTitle>
+                  <CardTitle className="font-semibold">
+                    {t("author-page.author-skills")}
+                  </CardTitle>
                 </CardHeader>
                 <BlogCardTags
                   tagsArr={skillsData}

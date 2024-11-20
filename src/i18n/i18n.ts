@@ -3,6 +3,10 @@ import { initReactI18next } from "react-i18next";
 
 import HomePageKa from "@/i18n/ka/pages/HomePage/HomePageKa.json";
 import HomePageEn from "@/i18n/en/pages/HomePage/HomePageEn.json";
+import AuthorPageKa from "@/i18n/ka/pages/AuthorPage.json";
+import AuthorPageEn from "@/i18n/en/pages/AuthorPage.json";
+import AboutPageKa from "@/i18n/ka/pages/AboutPage.json";
+import AboutPageEn from "@/i18n/en/pages/AboutPage.json";
 import BlogCardInfoKa from "@/i18n/ka/pages/HomePage/BlogCardInfoKa.json";
 import BlogCardInfoEn from "@/i18n/en/pages/HomePage/BlogCardInfoEn.json";
 import LoginPageKa from "@/i18n/ka/pages/LoginPageKa.json";
@@ -27,6 +31,8 @@ i18n.use(initReactI18next).init({
         "footer-component": footerKa,
         "home-page": HomePageKa,
         "card-info": BlogCardInfoKa,
+        "author-page": AuthorPageKa,
+        "about-page": AboutPageKa,
       },
     },
     en: {
@@ -38,6 +44,8 @@ i18n.use(initReactI18next).init({
         "footer-component": footerEn,
         "home-page": HomePageEn,
         "card-info": BlogCardInfoEn,
+        "author-page": AuthorPageEn,
+        "about-page": AboutPageEn,
       },
     },
   },

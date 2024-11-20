@@ -22,7 +22,7 @@ export default function AuthorPage() {
     <div className="mx-auto max-w-4xl flex-grow px-4 py-8">
       <Card className="mb-12 flex flex-col items-center rounded-lg bg-card p-8 shadow-lg md:flex-row md:items-start">
         <div className="flex flex-col items-start gap-6 md:flex-row">
-          <Avatar className="h-32 w-32 border-4 border-blue-500">
+          <Avatar className="h-32 w-32 border-4 border-primary">
             <AvatarFallback className="text-2xl">JD</AvatarFallback>
           </Avatar>
 

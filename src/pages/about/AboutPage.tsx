@@ -24,7 +24,11 @@ const AboutPage = () => {
               in the world of technology.
             </p>
           </div>
-          <div className="aspect-square rounded-lg bg-muted" />
+          <img
+            src="https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=400&amp;width=400"
+            alt="Team collaboration"
+            className="rounded-lg object-cover"
+          />
         </section>
 
         <section className="space-y-8">
@@ -32,7 +36,7 @@ const AboutPage = () => {
           <div className="grid gap-6 md:grid-cols-3">
             <Card>
               <CardHeader>
-                <Book className="h-12 w-12 text-blue-600" />
+                <Book className="h-12 w-12 text-primary" />
                 <CardTitle>Rich Content</CardTitle>
               </CardHeader>
               <CardContent>
@@ -45,7 +49,7 @@ const AboutPage = () => {
 
             <Card>
               <CardHeader>
-                <Users className="h-12 w-12 text-blue-600" />
+                <Users className="h-12 w-12 text-primary" />
                 <CardTitle>Vibrant Community</CardTitle>
               </CardHeader>
               <CardContent>

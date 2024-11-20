@@ -9,7 +9,7 @@ const LazyWritePage = lazy(() => import("./pages/write/WritePage"));
 const LazyAboutPage = lazy(() => import("./pages/about/AboutPage"));
 const LazyLoginPage = lazy(() => import("./pages/login/LoginPage"));
 const LazyRegisterPage = lazy(() => import("./pages/register/RegisterPage"));
-const LazyAuthorPage = lazy(() => import("./pages/author/authorPage"));
+const LazyAuthorPage = lazy(() => import("./pages/author/AuthorPage"));
 
 function App() {
   return (

@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { register } from "@/supabase/auth/httpRegister";
 import { AlertDestructive } from "@/components/error/errorAlert";
@@ -36,7 +36,7 @@ const RegisterPage = () => {
       };
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setRegisterData(initialRegisterObj);
     mutate(registerData);

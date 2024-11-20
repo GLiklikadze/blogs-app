@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { login } from "@/supabase/auth/httpRegister";
 import { AlertDestructive } from "@/components/error/errorAlert";
 import { useMutation } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ const initialLoginObj = {
 const LoginPage = () => {
   const [loginData, setLoginData] = useState(initialLoginObj);
 
-  const { mutate, isPending, isError, error, isSuccess } = useMutation({
+  const { mutate, isError, error, isSuccess } = useMutation({
     mutationKey: ["register"],
     mutationFn: login,
   });
@@ -36,7 +36,7 @@ const LoginPage = () => {
       };
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate(loginData);
     setLoginData(initialLoginObj);

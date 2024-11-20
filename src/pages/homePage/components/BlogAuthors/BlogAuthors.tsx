@@ -16,7 +16,7 @@ const BlogAuthors: React.FC<BlogAuthorsProps> = ({ featuredAuthors }) => {
           return (
             <li key={index}>
               <Link
-                to=""
+                to="/author"
                 className="flex flex-wrap items-center space-x-4 p-6 pt-0"
               >
                 <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">

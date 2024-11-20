@@ -63,6 +63,16 @@ export const popularTagsData = [
   "Healthcare",
   "Innovation",
 ];
+export const skillsData = [
+  "JavaScript",
+  "React",
+  "Node.js",
+  "Python",
+  "AI",
+  "Blockchain",
+  "Web Development",
+];
+
 export const popularTagsDataKa = [
   "ვებ განვითარება",
   "ტენდენციები",

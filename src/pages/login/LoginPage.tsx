@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { login } from "@/supabase/auth/httpRegister";
+import { login, logOut } from "@/supabase/auth/httpRegister";
 import { AlertDestructive } from "@/components/error/errorAlert";
 import { useMutation } from "@tanstack/react-query";
 
@@ -21,10 +21,21 @@ const initialLoginObj = {
 };
 const LoginPage = () => {
   const [loginData, setLoginData] = useState(initialLoginObj);
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  const { mutate, isError, error, isSuccess } = useMutation({
-    mutationKey: ["register"],
+  const { mutate, isError, error, isSuccess, data } = useMutation({
+    mutationKey: ["login"],
     mutationFn: login,
+  });
+
+  const {
+    mutate: mutateLogOut,
+    isError: isErrorLogOut,
+    error: errorLogOut,
+    // isSuccess: isSuccessLogOut,
+  } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: logOut,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,82 +51,106 @@ const LoginPage = () => {
     e.preventDefault();
     mutate(loginData);
     setLoginData(initialLoginObj);
+    setLoggedIn((prevLoggedIn) => !prevLoggedIn);
   };
   const { t } = useTranslation();
+
+  let cardContent = (
+    <>
+      <CardHeader>
+        <CardTitle className="mx-auto text-2xl font-bold">
+          {t("login-page.login-header")}
+        </CardTitle>
+        <CardDescription className="mx-auto text-center">
+          {t("login-page.login-message")}
+        </CardDescription>
+      </CardHeader>
+      <form onSubmit={handleSubmit}>
+        <CardContent>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email"> {t("login-page.email-label")}</Label>
+              <Input
+                id="email"
+                value={loginData.email}
+                onChange={handleChange}
+                type="email"
+                name="email"
+                placeholder="m@example.com"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">
+                  {" "}
+                  {t("login-page.password-label")}
+                </Label>
+                <Link
+                  to=""
+                  className="ml-auto inline-block text-sm text-primary underline"
+                >
+                  {t("login-page.forgot-password")}
+                </Link>
+              </div>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                onChange={handleChange}
+                value={loginData.password}
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              {t("login-page.login-button")}
+            </Button>
+          </div>
+          {isError && (
+            <div className="mt-4">
+              <AlertDestructive
+                alertTitle={error.name}
+                alertDescription={error?.message}
+              />
+            </div>
+          )}
+          <div className="mt-4 text-center text-sm">
+            {t("login-page.sing-up-label")}
+            <Link to="/register" className="text-primary underline">
+              {t("login-page.sing-up-link")}
+            </Link>
+          </div>
+        </CardContent>
+      </form>
+    </>
+  );
+  const handleLogOut = () => {
+    setLoggedIn((prevLoggedIn) => !prevLoggedIn);
+    mutateLogOut();
+  };
+
+  if (isSuccess && loggedIn) {
+    cardContent = (
+      <div className="w-full flex-col place-items-center space-y-8 p-8">
+        <p>
+          User - {data.user.email} is{" "}
+          <span className="text-lime-500">Logged In</span>
+        </p>
+        <Button className="w-44" onClick={handleLogOut}>
+          Sign out
+        </Button>
+        {isErrorLogOut && (
+          <AlertDestructive
+            alertTitle={errorLogOut?.name}
+            alertDescription={errorLogOut?.message}
+          />
+        )}
+      </div>
+    );
+  }
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
-      <Card className="mx-auto w-[30rem]">
-        <CardHeader>
-          <CardTitle className="mx-auto text-2xl font-bold">
-            {t("login-page.login-header")}
-          </CardTitle>
-          <CardDescription className="mx-auto text-center">
-            {t("login-page.login-message")}
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent>
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email"> {t("login-page.email-label")}</Label>
-                <Input
-                  id="email"
-                  value={loginData.email}
-                  onChange={handleChange}
-                  type="email"
-                  name="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">
-                    {" "}
-                    {t("login-page.password-label")}
-                  </Label>
-                  <Link
-                    to=""
-                    className="ml-auto inline-block text-sm text-primary underline"
-                  >
-                    {t("login-page.forgot-password")}
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  onChange={handleChange}
-                  value={loginData.password}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                {t("login-page.login-button")}
-              </Button>
-            </div>
-            {isError && (
-              <div className="mt-4">
-                <AlertDestructive
-                  alertTitle={error.name}
-                  alertDescription={error?.message}
-                />
-              </div>
-            )}
-            {isSuccess && (
-              <p className="text-center text-sm font-normal text-lime-700">
-                Sign-in successful
-              </p>
-            )}
-            <div className="mt-4 text-center text-sm">
-              {t("login-page.sing-up-label")}
-              <Link to="/register" className="text-primary underline">
-                {t("login-page.sing-up-link")}
-              </Link>
-            </div>
-          </CardContent>
-        </form>
-      </Card>
+      <Card className="mx-auto w-[30rem]">{cardContent}</Card>
     </div>
   );
 };

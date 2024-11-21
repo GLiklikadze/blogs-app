@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import TagInput from "@/components/ui/tagInput";
 
 const WritePage = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
       <Card className="mx-auto w-[46rem]">
@@ -41,7 +41,7 @@ const WritePage = () => {
             <Input id="imgUploadInput" type="file" />
             <TagInput />
             <Button type="submit" className="w-full">
-              {t("login-page.login-button")}
+              Publish Post
             </Button>
           </div>
         </CardContent>

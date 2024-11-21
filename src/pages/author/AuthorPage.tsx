@@ -15,24 +15,35 @@ import BlogCardHeader from "../homePage/components/BlogCardHeader/BlogCardHeader
 import BlogCardInfo from "../homePage/components/BlogCardInfo/BlogCardInfo";
 import BlogCardContent from "../homePage/components/BlogCardContent/BlogCardContent";
 import BlogCardTags from "../homePage/components/BlogCardTags/BlogCardTags";
-import { blogsData, skillsData } from "@/data/blogs-data";
+import { blogsData, featuredAuthors } from "@/data/blogs-data";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
 export default function AuthorPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { id } = useParams();
+  const selectedAuthor = featuredAuthors.find((author) => author.id === id);
+  const authorName =
+    i18n.language === "ka" ? selectedAuthor?.authorKa : selectedAuthor?.author;
+  const authorInfo =
+    i18n.language === "ka"
+      ? selectedAuthor?.authorInfoKa
+      : selectedAuthor?.authorInfo;
+  const authorFirstAndLastNameArray = selectedAuthor?.author.split(" ");
+  const firstName = authorFirstAndLastNameArray?.[0][0];
+  const lastName = authorFirstAndLastNameArray?.[1][0];
   return (
     <div className="mx-auto max-w-4xl flex-grow px-4 py-8">
       <Card className="mb-12 flex flex-col items-center rounded-lg bg-card p-8 shadow-lg md:flex-row md:items-start">
         <div className="flex flex-col items-start gap-6 md:flex-row">
           <Avatar className="h-32 w-32 border-4 border-primary">
-            <AvatarFallback className="text-2xl">JD</AvatarFallback>
+            <AvatarFallback className="text-2xl">
+              {`${firstName}${lastName}`}
+            </AvatarFallback>
           </Avatar>
           <div className="flex-1 space-y-4">
-            <h1 className="text-3xl font-bold">Jane Doe</h1>
-            <p className="text-muted-foreground">
-              Tech enthusiast, software engineer, and avid blogger. Passionate
-              about AI, web development, and the future of technology.
-            </p>
+            <h1 className="text-3xl font-bold"> {authorName}</h1>
+            <p className="text-muted-foreground">{authorInfo}</p>
             <div className="flex gap-2">
               <Button variant="outline" size="icon" className="rounded-full">
                 <Twitter className="h-4 w-4" />
@@ -54,11 +65,17 @@ export default function AuthorPage() {
             <div className="flex gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span>1234 {t("author-page.author-followers")}</span>
+                <span>
+                  {selectedAuthor?.authorFollowers}{" "}
+                  {t("author-page.author-followers")}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
-                <span>567 {t("author-page.author-following")}</span>
+                <span>
+                  {selectedAuthor?.authorFollowing}{" "}
+                  {t("author-page.author-following")}
+                </span>
               </div>
             </div>
           </div>
@@ -125,22 +142,15 @@ export default function AuthorPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>
-                  Jane Doe is a seasoned software engineer with over a decade of
-                  experience in web development. She specializes in JavaScript,
-                  React, and Node.js, and has a keen interest in emerging
-                  technologies like AI and blockchain. Jane is a frequent
-                  speaker at tech conferences and contributes to various
-                  open-source projects.
-                </CardDescription>
+                <CardDescription>{authorInfo}</CardDescription>
                 <CardHeader className="pl-0">
                   <CardTitle className="font-semibold">
                     {t("author-page.author-skills")}
                   </CardTitle>
                 </CardHeader>
                 <BlogCardTags
-                  tagsArr={skillsData}
-                  tagsArrKa={skillsData}
+                  tagsArr={selectedAuthor?.tagsArr ?? []}
+                  tagsArrKa={selectedAuthor?.tagsArrKa ?? []}
                   padding="0"
                 />
               </CardContent>

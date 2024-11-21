@@ -8,7 +8,7 @@ const BlogAuthors: React.FC<BlogAuthorsProps> = ({ featuredAuthors }) => {
     <div className="pt-0">
       <ul>
         {featuredAuthors.map((authorObj, index: number) => {
-          const { author, authorKa, iconSrc, profession, professionKa } =
+          const { author, authorKa, iconSrc, profession, professionKa, id } =
             authorObj;
           const authorName = i18n.language === "ka" ? authorKa : author;
           const professionData =
@@ -16,7 +16,7 @@ const BlogAuthors: React.FC<BlogAuthorsProps> = ({ featuredAuthors }) => {
           return (
             <li key={index}>
               <Link
-                to="/author"
+                to={`/author/${id}`}
                 className="flex flex-wrap items-center space-x-4 p-6 pt-0"
               >
                 <span className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">

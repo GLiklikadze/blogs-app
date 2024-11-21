@@ -4,4 +4,5 @@ export type BlogCardInfoProps = {
   date: string;
   dateKa: string;
   timeToRead: string | number;
+  authorId?: string;
 };

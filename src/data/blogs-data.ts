@@ -13,6 +13,7 @@ export const blogsData = [
     date: "May 15, 2023",
     dateKa: "მაისი 15, 2023",
     author: "John Doe",
+    authorId: "0001",
     authorKa: "ჯონ დო",
     tagsArr: ["Blockchain", "Technology", "Future"],
     tagsArrKa: ["ბლოკჩეინი", "ტექნოლოგია", "მომავალი"],
@@ -33,6 +34,7 @@ export const blogsData = [
     date: "June 10, 2023",
     dateKa: "ივნისი 10, 2023",
     author: "Jane Smith",
+    authorId: "0002",
     authorKa: "ჯეინ სმიტი",
     tagsArr: ["AI", "Healthcare", "Innovation"],
     tagsArrKa: ["ხელოვნური ინტელექტი", "ჯანმრთელობა", "ინოვაცია"],
@@ -49,7 +51,8 @@ export const blogsData = [
     timeToRead: "6",
     date: "July 22, 2023",
     dateKa: "ივლისი 22, 2023",
-    author: "Michael Brown",
+    author: "David Black",
+    authorId: "0003",
     authorKa: "მაიკლ ბრაუნი",
     tagsArr: ["Web Development", "Trends", "2024"],
     tagsArrKa: ["ვებ განვითარება", "ტენდენციები", "2024"],
@@ -83,27 +86,54 @@ export const popularTagsDataKa = [
 
 export const featuredAuthors = [
   {
+    id: "0001",
     author: "John Doe",
     authorKa: "ჯონ დო",
     iconSrc:
       "https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=40&amp;width=40",
     profession: "Blockchain Enthusiast",
     professionKa: "ბლოკჩეინის ენთუზიასტი",
+    authorInfo:
+      "Tech enthusiast, software engineer, and avid blogger. Passionate about AI, web development, and the future of technology.",
+    authorInfoKa:
+      "ტექნიკური ენთუზიასტი, პროგრამული უზრუნველყოფის ინჟინერი და მგზნებარე ბლოგერი. გატაცებული AI, ვებ განვითარებისა და ტექნოლოგიების მომავლის მიმართ.",
+    authorFollowers: 567,
+    authorFollowing: 178,
+    tagsArr: ["Blockchain", "Technology", "Future"],
+    tagsArrKa: ["ბლოკჩეინი", "ტექნოლოგია", "მომავალი"],
   },
   {
+    id: "0002",
     author: "Jane Smith",
     authorKa: "ჯეინ სმიტი",
     iconSrc:
       "https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=40&amp;width=40",
     profession: "Crypto Analyst",
     professionKa: "კრიპტო ანალიტიკოსი",
+    authorInfo:
+      "Tech enthusiast, software engineer, and avid blogger. Passionate about AI, web development, and the future of technology.",
+    authorInfoKa:
+      "ტექნიკური ენთუზიასტი, პროგრამული უზრუნველყოფის ინჟინერი და მგზნებარე ბლოგერი. გატაცებული AI, ვებ განვითარებისა და ტექნოლოგიების მომავლის მიმართ.",
+    authorFollowers: 347,
+    authorFollowing: 170,
+    tagsArr: ["AI", "Healthcare", "Innovation"],
+    tagsArrKa: ["ხელოვნური ინტელექტი", "ჯანმრთელობა", "ინოვაცია"],
   },
   {
-    author: "Jane Smith",
-    authorKa: "ჯეინ სმიტი",
+    id: "0003",
+    author: "David Black",
+    authorKa: "დეივიდ ბლექი",
     iconSrc:
       "https://g-zwkebgiacpe.vusercontent.net/placeholder.svg?height=40&amp;width=40",
     profession: "Tech Journalist",
     professionKa: "ტექნიკური ჟურნალისტი",
+    authorInfo:
+      "Tech enthusiast, software engineer, and avid blogger. Passionate about AI, web development, and the future of technology.",
+    authorInfoKa:
+      "ტექნიკური ენთუზიასტი, პროგრამული უზრუნველყოფის ინჟინერი და მგზნებარე ბლოგერი. გატაცებული AI, ვებ განვითარებისა და ტექნოლოგიების მომავლის მიმართ.",
+    authorFollowers: 707,
+    authorFollowing: 322,
+    tagsArr: ["Web Development", "Trends", "2024"],
+    tagsArrKa: ["ვებ განვითარება", "ტენდენციები", "2024"],
   },
 ];

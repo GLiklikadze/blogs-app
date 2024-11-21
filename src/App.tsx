@@ -60,7 +60,7 @@ function App() {
               }
             />
             <Route
-              path="/author"
+              path="/author/:id"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <LazyAuthorPage />

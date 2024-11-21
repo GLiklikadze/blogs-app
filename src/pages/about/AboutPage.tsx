@@ -3,24 +3,7 @@ import { Button } from "@/components/ui/button/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-// {
-//   "about-heading": "About bitBlogs",
-//   "about-description": "Empowering tech enthusiasts to share knowledge and inspire innovation.",
-//   "blog-mission-heading": "Our Mission",
-//   "blog-mission": "At bitBlogs, we believe in the power of shared knowledge. Our mission is to create a platform where tech enthusiasts, developers, and innovators can come together to share ideas, learn from each other, and push the boundaries of what's possible in the world of technology.",
-//   "page-offer-heading": "What We Offer",
-//   "offer-1-heading": "Rich Content",
-//   "offer-1-content": "Access a wide range of articles, tutorials, and insights on the latest tech trends and best practices.",
-//   "offer-2-heading": "Vibrant Community",
-//   "offer-2-content": "Connect with like-minded individuals, share your knowledge, and grow your professional network.",
-//   "offer-3-heading": "Cutting-edge Topics",
-//   "offer-3-content": "Stay ahead of the curve with content covering emerging technologies and innovative solutions.",
-//   "page-story-heading": "Our Story",
-//   "page-story-content": "Founded in 2023, bitBlogs started as a small project by a group of passionate developers who wanted to create a space for sharing their experiences and learning from others. What began as a simple blog quickly grew into a thriving community of tech enthusiasts from all around the world.\n Today, bitBlogs is proud to be a leading platform for technology-focused content, fostering innovation and collaboration in the ever-evolving world of tech.",
-//   "join-us-heading": "Join Us on Our Journey",
-//   "join-us-text": "Whether you're a seasoned developer, a curious beginner, or somewhere in between, there's a place for you at bitBlogs. Let's shape the future of technology together.",
-//   "start-register-button": "Get Started Today"
-// }
+
 const AboutPage = () => {
   const { t } = useTranslation();
   return (
@@ -62,9 +45,7 @@ const AboutPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  <CardTitle className="leading-6">
-                    {t("about-page.offer-1-content")}
-                  </CardTitle>
+                  {t("about-page.offer-1-content")}
                 </p>
               </CardContent>
             </Card>

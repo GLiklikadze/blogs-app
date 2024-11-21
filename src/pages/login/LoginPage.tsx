@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { login, logOut } from "@/supabase/auth/httpRegister";
+import { login } from "@/supabase/auth/httpRegister";
 import { AlertDestructive } from "@/components/error/errorAlert";
 import { useMutation } from "@tanstack/react-query";
 
@@ -22,20 +22,12 @@ const initialLoginObj = {
 const LoginPage = () => {
   const [loginData, setLoginData] = useState(initialLoginObj);
   const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const { mutate, isError, error, isSuccess, data } = useMutation({
     mutationKey: ["login"],
     mutationFn: login,
-  });
-
-  const {
-    mutate: mutateLogOut,
-    isError: isErrorLogOut,
-    error: errorLogOut,
-    // isSuccess: isSuccessLogOut,
-  } = useMutation({
-    mutationKey: ["logout"],
-    mutationFn: logOut,
+    onSuccess: () => navigate("/"),
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -124,10 +116,6 @@ const LoginPage = () => {
       </form>
     </>
   );
-  const handleLogOut = () => {
-    setLoggedIn((prevLoggedIn) => !prevLoggedIn);
-    mutateLogOut();
-  };
 
   if (isSuccess && loggedIn) {
     cardContent = (
@@ -136,7 +124,7 @@ const LoginPage = () => {
           User - {data.user.email} is{" "}
           <span className="text-lime-500">Logged In</span>
         </p>
-        <Button className="w-44" onClick={handleLogOut}>
+        {/* <Button className="w-44" onClick={handleLogOut}>
           Sign out
         </Button>
         {isErrorLogOut && (
@@ -144,7 +132,7 @@ const LoginPage = () => {
             alertTitle={errorLogOut?.name}
             alertDescription={errorLogOut?.message}
           />
-        )}
+        )} */}
       </div>
     );
   }

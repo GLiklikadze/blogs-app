@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -22,10 +22,12 @@ const initialRegisterObj = {
 };
 const RegisterPage = () => {
   const [registerData, setRegisterData] = useState(initialRegisterObj);
+  const navigate = useNavigate();
 
   const { mutate, isPending, isError, error, isSuccess } = useMutation({
     mutationKey: ["register"],
     mutationFn: register,
+    onSuccess: () => navigate("/login"),
   });
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

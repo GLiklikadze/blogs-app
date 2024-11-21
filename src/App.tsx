@@ -1,8 +1,10 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import Layout from "./components/layout/Layout";
 import { ThemeProvider } from "./components/header/components/theme/theme-provider";
+import { supabase } from "./supabase/supabaseClient";
+import { useAuthContext } from "./context/hooks/useAuthContext";
 
 const LazyHomePage = lazy(() => import("./pages/homePage/HomePage"));
 const LazyWritePage = lazy(() => import("./pages/write/WritePage"));
@@ -12,6 +14,22 @@ const LazyRegisterPage = lazy(() => import("./pages/register/RegisterPage"));
 const LazyAuthorPage = lazy(() => import("./pages/author/AuthorPage"));
 
 function App() {
+  const { handleSetUser } = useAuthContext();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      handleSetUser(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      handleSetUser(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [handleSetUser]);
+
   return (
     <ThemeProvider defaultTheme="system">
       <BrowserRouter

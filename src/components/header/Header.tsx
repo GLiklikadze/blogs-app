@@ -4,9 +4,27 @@ import { ModeToggle } from "./components/theme/mode-toggle";
 import LanguageSwitcher from "./components/theme/language-switcher";
 import NavbarSearch from "./components/search/NavbarSearch";
 import { useTranslation, Trans } from "react-i18next";
+import { useAuthContext } from "@/context/hooks/useAuthContext";
+import { logOut } from "@/supabase/auth/httpRegister";
+import { useMutation } from "@tanstack/react-query";
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
+  const { user } = useAuthContext();
+
+  const {
+    mutate: mutateLogOut,
+    // isError: isErrorLogOut,
+    // error: errorLogOut,
+    // isSuccess: isSuccessLogOut,
+  } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: logOut,
+  });
+  const handleLogOut = () => {
+    mutateLogOut();
+  };
+
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
     return isActive
       ? " border-blue-500 font-semibold text-primary"
@@ -33,9 +51,13 @@ const Header: React.FC = () => {
           <span>
             <NavbarSearch />
           </span>
-          <Link to="login">
-            <Button>{t("header-nav.sign-in")}</Button>
-          </Link>
+          {user ? (
+            <Button onClick={handleLogOut}>Log Out</Button>
+          ) : (
+            <Link to="login">
+              <Button>{t("header-nav.sign-in")}</Button>
+            </Link>
+          )}
           <LanguageSwitcher />
           <ModeToggle />
         </div>

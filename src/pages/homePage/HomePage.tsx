@@ -34,6 +34,7 @@ const HomePage = () => {
               tagsArrKa,
               timeToRead,
               id,
+              authorId,
             } = blogItem;
             return (
               <BlogBox key={id}>
@@ -48,6 +49,7 @@ const HomePage = () => {
                   date={date}
                   dateKa={dateKa}
                   timeToRead={timeToRead}
+                  authorId={authorId}
                 />
                 <BlogCardContent
                   blogContent={blogContent}

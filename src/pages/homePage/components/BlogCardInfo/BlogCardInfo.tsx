@@ -8,13 +8,14 @@ const BlogCardInfo: React.FC<BlogCardInfoProps> = ({
   date,
   dateKa,
   timeToRead,
+  authorId,
 }) => {
   const { i18n, t } = useTranslation();
   const authorData = i18n.language === "ka" ? authorKa : author;
   const dateData = i18n.language === "ka" ? dateKa : date;
   return (
     <div className="flex items-center space-x-2 p-6 pt-0 text-sm">
-      <Link className="hover:underline" to="">
+      <Link className="hover:underline" to={`/author/${authorId}`}>
         {authorData}
       </Link>
       <span>•</span>

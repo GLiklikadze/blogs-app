@@ -15,11 +15,6 @@ export const register = async ({
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      // options: {
-      //   data: {
-      //     full_name: full_name,
-      //   },
-      // },
     });
 
     if (error) {

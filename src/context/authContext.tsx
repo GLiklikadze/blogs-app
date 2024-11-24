@@ -1,14 +1,15 @@
 import { PropsWithChildren, useState } from "react";
 import { AuthContext } from "./hooks/useAuthContext";
+import { User } from "@supabase/supabase-js";
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [userId, setUserId] = useState<string | undefined>();
+  const [user, setUser] = useState<User | undefined>();
 
-  const handleSetUserId = (id: string | undefined) => {
-    setUserId(id);
+  const handleSetUserId = (user: User | undefined) => {
+    setUser(user);
   };
   return (
-    <AuthContext.Provider value={{ userId, handleSetUserId }}>
+    <AuthContext.Provider value={{ user, handleSetUserId }}>
       {children}
     </AuthContext.Provider>
   );

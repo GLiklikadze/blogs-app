@@ -21,7 +21,6 @@ const initialLoginObj = {
 };
 const LoginPage = () => {
   const [loginData, setLoginData] = useState(initialLoginObj);
-  // const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const { mutate, isError, error } = useMutation({
@@ -43,7 +42,6 @@ const LoginPage = () => {
     e.preventDefault();
     mutate(loginData);
     setLoginData(initialLoginObj);
-    // setLoggedIn((prevLoggedIn) => !prevLoggedIn);
   };
   const { t } = useTranslation();
 
@@ -117,25 +115,6 @@ const LoginPage = () => {
     </>
   );
 
-  // if (isSuccess && loggedIn) {
-  //   cardContent = (
-  //     <div className="w-full flex-col place-items-center space-y-8 p-8">
-  //       <p>
-  //         User - {data.user.email} is{" "}
-  //         <span className="text-lime-500">Logged In</span>
-  //       </p>
-  //       {/* <Button className="w-44" onClick={handleLogOut}>
-  //         Sign out
-  //       </Button>
-  //       {isErrorLogOut && (
-  //         <AlertDestructive
-  //           alertTitle={errorLogOut?.name}
-  //           alertDescription={errorLogOut?.message}
-  //         />
-  //       )} */}
-  //     </div>
-  //   );
-  // }
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
       <Card className="mx-auto w-[30rem]">{cardContent}</Card>

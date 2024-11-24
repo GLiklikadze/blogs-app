@@ -1,9 +1,5 @@
 import { createContext, useContext } from "react";
-
-export type AuthContextType = {
-  userId: string | undefined;
-  handleSetUserId: (id: string | undefined) => void;
-};
+import { AuthContextType } from "./authContext.types";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 

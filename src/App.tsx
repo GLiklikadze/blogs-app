@@ -20,12 +20,12 @@ function App() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      handleSetUserId(session?.user.id);
+      handleSetUserId(session?.user);
     });
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      handleSetUserId(session?.user.id);
+      handleSetUserId(session?.user);
     });
 
     return () => subscription.unsubscribe();

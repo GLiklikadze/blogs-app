@@ -3,8 +3,8 @@ import { PropsWithChildren } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
-  const { userId } = useAuthContext();
-  if (userId) {
+  const { user } = useAuthContext();
+  if (user) {
     return <Navigate to="/" />;
   }
 

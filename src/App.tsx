@@ -5,6 +5,8 @@ import Layout from "./components/layout/Layout";
 import { ThemeProvider } from "./components/header/components/theme/theme-provider";
 import { supabase } from "./supabase/supabaseClient";
 import { useAuthContext } from "./context/hooks/useAuthContext";
+import AuthGuard from "./components/route-guards/authGuard";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 const LazyHomePage = lazy(() => import("./pages/homePage/HomePage"));
 const LazyWritePage = lazy(() => import("./pages/write/WritePage"));
@@ -14,21 +16,20 @@ const LazyRegisterPage = lazy(() => import("./pages/register/RegisterPage"));
 const LazyAuthorPage = lazy(() => import("./pages/author/AuthorPage"));
 
 function App() {
-  const { handleSetUser } = useAuthContext();
+  const { handleSetUserId } = useAuthContext();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      handleSetUser(session);
+      handleSetUserId(session?.user.id);
     });
-
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      handleSetUser(session);
+      handleSetUserId(session?.user.id);
     });
 
     return () => subscription.unsubscribe();
-  }, [handleSetUser]);
+  }, [handleSetUserId]);
 
   return (
     <ThemeProvider defaultTheme="system">
@@ -65,7 +66,9 @@ function App() {
               path="/login"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
-                  <LazyLoginPage />
+                  <AuthGuard>
+                    <LazyLoginPage />
+                  </AuthGuard>
                 </Suspense>
               }
             />
@@ -73,7 +76,9 @@ function App() {
               path="/register"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
-                  <LazyRegisterPage />
+                  <AuthGuard>
+                    <LazyRegisterPage />
+                  </AuthGuard>
                 </Suspense>
               }
             />
@@ -82,6 +87,14 @@ function App() {
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <LazyAuthorPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ProfilePage />
                 </Suspense>
               }
             />

@@ -2,13 +2,13 @@ import { PropsWithChildren, useState } from "react";
 import { AuthContext } from "./hooks/useAuthContext";
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState<string | undefined>();
 
-  const handleSetUser = (user: any) => {
-    setUser(user);
+  const handleSetUserId = (id: string | undefined) => {
+    setUserId(id);
   };
   return (
-    <AuthContext.Provider value={{ user, handleSetUser }}>
+    <AuthContext.Provider value={{ userId, handleSetUserId }}>
       {children}
     </AuthContext.Provider>
   );

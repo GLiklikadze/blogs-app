@@ -43,7 +43,7 @@ export const login = async ({ email, password }: httpRegisterProps) => {
     if (error) {
       throw new Error(`Sign-in failed: ${error.message}`);
     }
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (err) {
     console.error("Error during Sign In:", err);

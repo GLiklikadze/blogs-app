@@ -116,7 +116,7 @@ const ProfilePage = () => {
           <Button
             variant="outline"
             size="icon"
-            className="shadow-s rounded-full border-4 border-green-600"
+            className="shadow-s rounded-full border-2 border-green-600"
             onClick={handleToggleEdit}
             title="Edit Information"
           >

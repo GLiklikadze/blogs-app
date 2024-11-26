@@ -1,0 +1,11 @@
+{
+  "card-title": "Profile Information",
+  "photo-label": "Profile Photo",
+  "tab-geo": "Geo",
+  "tab-eng": "Eng",
+  "full-name-label": "Full Name",
+  "avatar-url-label": "Avatar URL",
+  "phone-number-label": "Mob Phone",
+  "edit-button": "Edit Information",
+  "sign-out-button": "Sign Out"
+}

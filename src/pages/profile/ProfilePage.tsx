@@ -97,7 +97,6 @@ const ProfilePage = () => {
   console.log(errors);
   const onSubmit = (fieldValues: ProfileFormValues) => {
     console.log(fieldValues);
-
     handleToggleEdit();
     editProfileData({ ...fieldValues, id: user?.id as string });
   };

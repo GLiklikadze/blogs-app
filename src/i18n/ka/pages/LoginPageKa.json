@@ -6,5 +6,10 @@
   "login-button": "შესვლა",
   "forgot-password": "დაგავიწყდათ პაროლი?",
   "sing-up-label": "არ გაქვს ანგარიში? ",
-  "sing-up-link": "დარეგისტრირდი "
+  "sing-up-link": "დარეგისტრირდი ",
+  "email-required-error": "ელ.ფოსტა სავალდებულოა",
+  "email-invalid-pattern": "ელ.ფოსტის ფორმატი არასწორია",
+  "password-required-error": "პაროლი სავალდებულოა",
+  "password-minLength-error": "პაროლი უნდა შეადგენდეს მინ. 5 სიმბოლოს",
+  "password-maxLength-error": "პაროლი უნდა შეადგენდეს მაქს. 5 სიმბოლოს"
 }

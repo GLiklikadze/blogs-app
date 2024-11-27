@@ -29,24 +29,34 @@ type ProfileFormValues = {
   phone_number: string;
 };
 const ProfilePage = () => {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    clearErrors,
+    formState: { errors },
+  } = useForm<ProfileFormValues>({
+    defaultValues: initialPayload,
+    mode: "onBlur",
+  });
   const [toggleEdit, setToggleEdit] = useState(false);
 
   const { user } = useAuthContext();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { control, handleSubmit, reset, watch } = useForm<ProfileFormValues>({
-    defaultValues: initialPayload,
-  });
+
   const full_name = watch("full_name");
   const full_name_ka = watch("full_name_ka");
   const avatar_url = watch("avatar_url");
   const phone_number = watch("phone_number");
 
-  const { data: receivedProfileData } = useQuery({
-    queryKey: ["getprofileinfo", user?.id],
-    queryFn: () => getProfileInfo(user?.id as string),
-    enabled: !!user,
-  });
+  const { data: receivedProfileData, refetch: refetchReceivedProfileData } =
+    useQuery({
+      queryKey: ["getprofileinfo", user?.id],
+      queryFn: () => getProfileInfo(user?.id as string),
+      enabled: !!user,
+    });
 
   useEffect(() => {
     if (receivedProfileData) {
@@ -73,30 +83,21 @@ const ProfilePage = () => {
       queryClient.invalidateQueries({
         queryKey: ["getprofilePhoto", user?.id],
       });
+      refetchReceivedProfileData();
     },
   });
 
   const handleToggleEdit = () => {
     setToggleEdit((prevToggleEdit) => !prevToggleEdit);
+    if (toggleEdit) {
+      clearErrors();
+    }
   };
-  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const { value, name } = e.target;
-  //   setProfilePayload((prevProfileData) => {
-  //     return {
-  //       ...prevProfileData,
-  //       [name]: value,
-  //     };
-  //   });
-  // };
-  // const handleSaveInfo = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   handleToggleEdit();
-  //   editProfileData({ ...profilePayload, id: user?.id as string });
-  // };
   console.log(full_name);
-
+  console.log(errors);
   const onSubmit = (fieldValues: ProfileFormValues) => {
     console.log(fieldValues);
+
     handleToggleEdit();
     editProfileData({ ...fieldValues, id: user?.id as string });
   };
@@ -162,18 +163,27 @@ const ProfilePage = () => {
                   <Controller
                     name="full_name_ka"
                     control={control}
-                    // rules={{
-                    //   required: "Full Name is required",
-                    // }}
-                    render={({ field: { onChange, value } }) => {
+                    rules={{
+                      required: t("profile-page.full-name-ka-required-error"),
+                      minLength: {
+                        value: 3,
+                        message: t("profile-page.full-name-ka-minLength-error"),
+                      },
+                      maxLength: {
+                        value: 25,
+                        message: t("profile-page.full-name-ka-maxLength-error"),
+                      },
+                    }}
+                    render={({ field: { onChange, value, onBlur } }) => {
                       return (
                         <>
                           <Input
                             type="text"
                             id="nameKa"
-                            className="max-w-56"
+                            className={`max-w-56 ${errors.full_name_ka && "border-red-500"}`}
                             value={value}
                             onChange={onChange}
+                            onBlur={onBlur}
                           />
                         </>
                       );
@@ -181,6 +191,11 @@ const ProfilePage = () => {
                   />
                 )}
               </div>
+              {errors.full_name_ka && (
+                <div className="mr-10 mt-2 text-right text-red-700">
+                  {errors?.full_name_ka.message}
+                </div>
+              )}
             </TabsContent>
             <TabsContent value="eng">
               <div className="flex min-h-9 flex-row items-center gap-14">
@@ -193,14 +208,26 @@ const ProfilePage = () => {
                   <Controller
                     name="full_name"
                     control={control}
-                    render={({ field: { onChange, value } }) => {
+                    rules={{
+                      required: t("profile-page.full-name-en-required-error"),
+                      minLength: {
+                        value: 3,
+                        message: t("profile-page.full-name-en-minLength-error"),
+                      },
+                      maxLength: {
+                        value: 25,
+                        message: t("profile-page.full-name-en-maxLength-error"),
+                      },
+                    }}
+                    render={({ field: { onChange, value, onBlur } }) => {
                       return (
                         <Input
                           type="text"
                           id="name"
-                          className="max-w-56"
+                          className={`max-w-56 ${errors.full_name && "border-red-500"}`}
                           value={value}
                           onChange={onChange}
+                          onBlur={onBlur}
                         />
                       );
                     }}
@@ -208,9 +235,13 @@ const ProfilePage = () => {
                 )}
               </div>
             </TabsContent>
+            {errors.full_name && (
+              <div className="mr-10 mt-2 text-right text-red-700">
+                {errors?.full_name.message}
+              </div>
+            )}
           </Tabs>
-
-          <div className="flex min-h-9 flex-row items-center gap-14 overflow-hidden">
+          <div className="flex min-h-10 flex-row items-start gap-14 overflow-hidden">
             <Label htmlFor="avatarUrl" className="w-24">
               {t("profile-page.avatar-url-label")}
             </Label>
@@ -219,25 +250,36 @@ const ProfilePage = () => {
                 {avatar_url}
               </p>
             ) : (
-              <Controller
-                name="avatar_url"
-                control={control}
-                render={({ field: { value, onChange } }) => {
-                  return (
-                    <Input
-                      type="url"
-                      id="avatarUrl"
-                      className="max-w-56"
-                      value={value}
-                      onChange={onChange}
-                    />
-                  );
-                }}
-              />
+              <div className="flex w-56 flex-col">
+                <Controller
+                  name="avatar_url"
+                  control={control}
+                  rules={{
+                    required: t("profile-page.avatar-required-error"),
+                  }}
+                  render={({ field: { value, onChange, onBlur } }) => {
+                    return (
+                      <Input
+                        type="url"
+                        id="avatarUrl"
+                        className={`max-w-56 ${errors.avatar_url && "border-red-500"}`}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                      />
+                    );
+                  }}
+                />
+                {errors.avatar_url && (
+                  <div className="mt-1 max-w-56 text-right text-red-700">
+                    {errors?.avatar_url.message}
+                  </div>
+                )}
+              </div>
             )}
           </div>
-          <div className="flex min-h-9 flex-row items-center gap-14">
-            <Label htmlFor="phoneNumber" className="w-24">
+          <div className="flex min-h-9 flex-row items-start gap-14">
+            <Label htmlFor="phoneNumber" className="mt-2 w-24">
               {t("profile-page.phone-number-label")}
             </Label>
             {!toggleEdit ? (
@@ -245,24 +287,42 @@ const ProfilePage = () => {
                 {phone_number}
               </p>
             ) : (
-              <Controller
-                name="phone_number"
-                control={control}
-                render={({ field: { value, onChange } }) => {
-                  return (
-                    <Input
-                      type="tel"
-                      id="phoneNumber"
-                      className="max-w-56"
-                      value={value}
-                      onChange={onChange}
-                    />
-                  );
-                }}
-              />
+              <div className="flex w-56 flex-col">
+                <Controller
+                  name="phone_number"
+                  control={control}
+                  rules={{
+                    required: t("profile-page.phone-number-required-error"),
+                    minLength: {
+                      value: 6,
+                      message: t("profile-page.phone-number-minLength-error"),
+                    },
+                    maxLength: {
+                      value: 14,
+                      message: t("profile-page.phone-number-maxLength-error"),
+                    },
+                  }}
+                  render={({ field: { value, onChange, onBlur } }) => {
+                    return (
+                      <Input
+                        type="tel"
+                        id="phoneNumber"
+                        className={`max-w-56 ${errors.phone_number && "border-red-500"}`}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                      />
+                    );
+                  }}
+                />
+                {errors.phone_number && (
+                  <div className="mt-1 max-w-56 text-right text-red-700">
+                    {errors?.phone_number.message}
+                  </div>
+                )}
+              </div>
             )}
           </div>
-
           <Button
             type="submit"
             className="w-full"

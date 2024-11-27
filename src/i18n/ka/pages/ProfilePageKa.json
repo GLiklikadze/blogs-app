@@ -7,5 +7,15 @@
   "avatar-url-label": "ავატარის ბმული",
   "phone-number-label": "მობილური",
   "edit-button": "რედაქტირება",
-  "sign-out-button": "გამოსვლა"
+  "sign-out-button": "გამოსვლა",
+  "full-name-ka-required-error": "სახელი, გვარი (ქართ) სავალდებულოა",
+  "full-name-ka-minLength-error": "სახელი, გვარი (ქართ) უნდა იყოს მინუმუმ 3 სიმბოლო",
+  "full-name-ka-maxLength-error": "სახელი, გვარი (ქართ) უნდა იყოს მაქსიმუმ 25 სიმბოლო",
+  "full-name-en-required-error": "სახელი, გვარი (ინგ) სავალდებულოა",
+  "full-name-en-minLength-error": "სახელი, გვარი (ინგ) უნდა იყოს მინუმუმ 3 სიმბოლო",
+  "full-name-en-maxLength-error": "სახელი, გვარი (ინგ) უნდა იყოს მაქსიმუმ 25 სიმბოლო",
+  "avatar-required-error": "ავატარის ბმული სავალდებულოა",
+  "phone-number-required-error": "ტელეფონის ნომერი სავალდებულოა",
+  "phone-number-minLength-error": "ტელეფონის ნომერი უნდა იყოს მინიმუმ 6 სიმბოლო",
+  "phone-number-maxLength-error": "ტელეფონის ნომერი უნდა იყოს მაქსიმუმ 14 სიმბოლო"
 }

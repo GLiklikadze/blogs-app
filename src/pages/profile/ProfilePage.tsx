@@ -15,18 +15,13 @@ import { TabsList, Tabs, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
+import { ProfileFormValues } from "./ProfilePage.types";
 
 const initialPayload = {
   full_name: "",
   full_name_ka: "",
   avatar_url: "",
   phone_number: "",
-};
-type ProfileFormValues = {
-  full_name: string;
-  full_name_ka: string;
-  avatar_url: string;
-  phone_number: string;
 };
 const ProfilePage = () => {
   const {

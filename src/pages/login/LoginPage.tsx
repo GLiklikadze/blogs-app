@@ -14,14 +14,11 @@ import { login } from "@/supabase/auth/httpRegister";
 import { AlertDestructive } from "@/components/error/errorAlert";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
+import { LoginFormValues } from "./LoginPage.types";
 
 const initialLoginObj = {
   email: "",
   password: "",
-};
-type LoginFormValues = {
-  email: string;
-  password: string;
 };
 const LoginPage = () => {
   const {

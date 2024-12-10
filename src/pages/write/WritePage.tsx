@@ -8,6 +8,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Controller, useForm } from "react-hook-form";
 import { supabase } from "@/supabase/supabaseClient";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { getBlogs } from "@/supabase/write/write";
+import BlogBox from "../homePage/components/BlogBox/BlogBox";
+import BlogCardHeader from "../homePage/components/BlogCardHeader/BlogCardHeader";
+import BlogCardInfo from "../homePage/components/BlogCardInfo/BlogCardInfo";
+import BlogCardContent from "../homePage/components/BlogCardContent/BlogCardContent";
+import { useProfileInfo } from "@/react-query/profileInfo";
 
 type writeBlogFormValues = {
   title_ka: string;
@@ -29,10 +36,39 @@ const createBlogDefaultValues = {
 
 const WritePage = () => {
   const { user } = useAuthContext();
+  const authorFullName =
+    useProfileInfo(user?.id).data?.full_name || user?.email;
+  const authorFullNameKa =
+    useProfileInfo(user?.id).data?.full_name_ka || user?.email;
+  console.log(authorFullName);
   // const { t } = useTranslation();
   const { control, handleSubmit } = useForm<writeBlogFormValues>({
     defaultValues: createBlogDefaultValues,
   });
+  const { data: blogsData, refetch: refetchBlogs } = useQuery({
+    queryKey: ["getBlogsData"],
+    queryFn: getBlogs,
+  });
+
+  const calculateReadTime = (text: string) => {
+    const wordsPerMinute = 200;
+    const totalWords = text?.trim().split(/\s+/).length;
+    const minutes = totalWords / wordsPerMinute;
+    const readTime = Math.ceil(minutes);
+
+    return readTime;
+  };
+  const getFormattedDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
 
   const onSubmit = (formValues: writeBlogFormValues) => {
     if (formValues?.image_url) {
@@ -43,20 +79,20 @@ const WritePage = () => {
           return supabase.from("blogs").insert({
             title_ka: formValues.title_ka,
             title_en: formValues.title_en,
-            decription_en: formValues.description_en,
+            description_en: formValues.description_en,
             description_ka: formValues.description_ka,
             image_url: res.data?.fullPath,
             user_id: user?.id,
           });
-          console.log("Upload File Response:", res.data?.fullPath);
         })
         .then((res) => console.log("created blog", res));
+      refetchBlogs();
     }
   };
 
   return (
-    <div className="flex h-screen w-full items-center justify-center px-4">
-      <Card className="mx-auto w-[46rem]">
+    <div className="flex w-full flex-col items-center gap-8 px-4">
+      <Card className="mx-auto mt-12 min-w-[48rem]">
         <CardHeader>
           <CardTitle className="mx-auto text-2xl font-bold">
             {/* {t("login-page.login-header")} */}Write a New Post
@@ -164,6 +200,44 @@ const WritePage = () => {
           </div>
         </CardContent>
       </Card>
+      <section className="w-1/2 space-y-8">
+        {blogsData?.map((blog) => {
+          const blogImageUrl = blog?.image_url
+            ? `${import.meta.env.VITE_SUPABASE_BLOG_IMAGES_STORAGE_URL}/${blog?.image_url}`
+            : "";
+          const {
+            created_at,
+            description_en,
+            description_ka,
+            id,
+            title_en,
+            title_ka,
+            user_id,
+          } = blog;
+
+          return (
+            <BlogBox key={id}>
+              <BlogCardHeader
+                imgSrc={blogImageUrl}
+                headingText={title_en ?? ""}
+                headingTextKa={title_ka ?? ""}
+              />
+              <BlogCardInfo
+                author={authorFullName ?? ""}
+                authorKa={authorFullNameKa ?? ""}
+                date={getFormattedDate(created_at)}
+                dateKa={getFormattedDate(created_at)}
+                timeToRead={calculateReadTime(description_en ?? "")}
+                authorId={user_id ?? ""}
+              />
+              <BlogCardContent
+                blogContent={description_en ?? ""}
+                blogContentKa={description_ka ?? ""}
+              />
+            </BlogBox>
+          );
+        })}
+      </section>
     </div>
   );
 };

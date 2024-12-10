@@ -12,7 +12,7 @@ export type Database = {
       blogs: {
         Row: {
           created_at: string
-          decription_en: string | null
+          description_en: string | null
           description_ka: string | null
           id: number
           image_url: string | null
@@ -22,7 +22,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          decription_en?: string | null
+          description_en?: string | null
           description_ka?: string | null
           id?: number
           image_url?: string | null
@@ -32,7 +32,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          decription_en?: string | null
+          description_en?: string | null
           description_ka?: string | null
           id?: number
           image_url?: string | null

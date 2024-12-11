@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { useTranslation } from "react-i18next";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
@@ -7,8 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 // import TagInput from "@/components/ui/tagInput";
 import { Controller, useForm } from "react-hook-form";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getBlogs, postBlogs } from "@/supabase/write/write";
 import BlogBox from "../homePage/components/BlogBox/BlogBox";
 import BlogCardHeader from "../homePage/components/BlogCardHeader/BlogCardHeader";
 import BlogCardInfo from "../homePage/components/BlogCardInfo/BlogCardInfo";
@@ -21,6 +18,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { blogCreateSchema } from "./schema";
 import { AlertDestructive } from "@/components/error/errorAlert";
 import { Alert } from "@/components/ui/alert";
+import { useBlogsData, usePostBlogs } from "@/react-query/writePage";
+import { calculateReadTime, getFormattedDate } from "./writeUtils";
 
 const createBlogDefaultValues = {
   title_ka: "",
@@ -32,10 +31,14 @@ const createBlogDefaultValues = {
 
 const WritePage = () => {
   const { user } = useAuthContext();
+
   const authorFullName =
     useProfileInfo(user?.id).data?.full_name || user?.email;
   const authorFullNameKa =
     useProfileInfo(user?.id).data?.full_name_ka || user?.email;
+
+  const { blogsData, isBlogsLoading, refetchBlogs } = useBlogsData();
+
   const { t } = useTranslation();
 
   const {
@@ -47,43 +50,13 @@ const WritePage = () => {
     resolver: zodResolver(blogCreateSchema),
     defaultValues: createBlogDefaultValues,
   });
-  const { data: blogsData, refetch: refetchBlogs } = useQuery({
-    queryKey: ["getBlogsData"],
-    queryFn: getBlogs,
-  });
 
-  const calculateReadTime = (text: string) => {
-    const wordsPerMinute = 200;
-    const totalWords = text?.trim().split(/\s+/).length;
-    const minutes = totalWords / wordsPerMinute;
-    const readTime = Math.ceil(minutes);
-
-    return readTime;
-  };
-  const getFormattedDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-  };
   const {
-    isSuccess: createdSuccess,
-    mutate: createBlogMutate,
-    isError: isBlogCreateError,
-    error: BlogCreateError,
-  } = useMutation({
-    mutationKey: ["create-blog"],
-    mutationFn: postBlogs,
-    onSuccess: () => {
-      refetchBlogs();
-      resetHookForm();
-    },
-  });
+    createBlogMutate,
+    createdSuccess,
+    BlogCreateError,
+    isBlogCreateError,
+  } = usePostBlogs(refetchBlogs, resetHookForm);
 
   const onSubmit = (formValues: writeBlogFormValues) => {
     const id = user?.id ?? "";
@@ -226,8 +199,8 @@ const WritePage = () => {
             )}
             {isBlogCreateError && (
               <AlertDestructive
-                alertTitle={BlogCreateError.name}
-                alertDescription={BlogCreateError.message}
+                alertTitle={BlogCreateError?.name || ""}
+                alertDescription={BlogCreateError?.message || ""}
               />
             )}
             {createdSuccess && (
@@ -259,7 +232,9 @@ const WritePage = () => {
             user_id,
           } = blog;
 
-          return (
+          return isBlogsLoading ? (
+            "Loading Blogs"
+          ) : (
             <BlogBox key={id}>
               <BlogCardHeader
                 imgSrc={blogImageUrl}

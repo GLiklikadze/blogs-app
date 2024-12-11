@@ -2,10 +2,10 @@
   "page-header": "ახალი ბლოგის შექმნა",
   "tab-geo": "ქარ",
   "tab-eng": "ინგ",
-  "blog-title-en": "სათაური ინგ",
-  "blog-title-ka": "სათაური ქარ",
-  "blog-content-ka": "ბლოგის შინაარსი ქარ",
-  "blog-content-en": "ბლოგის შინაარსი ინგ",
+  "blog-title-en": "სათაური (ინგ)",
+  "blog-title-ka": "სათაური (ქარ)",
+  "blog-content-ka": "ბლოგის შინაარსი (ქარ)",
+  "blog-content-en": "ბლოგის შინაარსი (ინგ)",
   "blog-image": "ბლოგის სურათი",
   "publish-button": "ბლოგის გამოქვეყნება"
 }

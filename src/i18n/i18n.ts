@@ -1,6 +1,8 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
+import WritePageKa from "@/i18n/ka/pages/WritePageKa.json";
+import WritePageEn from "@/i18n/en/pages/WritePageEn.json";
 import ProfilePageKa from "@/i18n/ka/pages/ProfilePageKa.json";
 import ProfilePageEn from "@/i18n/en/pages/ProfilePageEn.json";
 import HomePageKa from "@/i18n/ka/pages/HomePage/HomePageKa.json";
@@ -36,6 +38,7 @@ i18n.use(initReactI18next).init({
         "author-page": AuthorPageKa,
         "about-page": AboutPageKa,
         "profile-page": ProfilePageKa,
+        "write-page": WritePageKa,
       },
     },
     en: {
@@ -50,6 +53,7 @@ i18n.use(initReactI18next).init({
         "author-page": AuthorPageEn,
         "about-page": AboutPageEn,
         "profile-page": ProfilePageEn,
+        "write-page": WritePageEn,
       },
     },
   },

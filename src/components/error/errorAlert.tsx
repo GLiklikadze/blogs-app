@@ -2,7 +2,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 type AlertDestructiveProps = {
-  alertTitle: string;
+  alertTitle?: string;
   alertDescription: string;
 };
 
@@ -13,7 +13,7 @@ export const AlertDestructive: React.FC<AlertDestructiveProps> = ({
   return (
     <Alert variant="destructive">
       <AlertCircle className="h-4 w-4" />
-      <AlertTitle>{!!alertTitle && alertTitle}</AlertTitle>
+      {alertTitle && <AlertTitle>{!!alertTitle && alertTitle}</AlertTitle>}
       <AlertDescription>
         {!!alertDescription && alertDescription}
       </AlertDescription>

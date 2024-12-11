@@ -6,10 +6,9 @@ import { Button } from "@/components/ui/button/button";
 import { Textarea } from "@/components/ui/textarea";
 // import TagInput from "@/components/ui/tagInput";
 import { Controller, useForm } from "react-hook-form";
-import { supabase } from "@/supabase/supabaseClient";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
-import { useQuery } from "@tanstack/react-query";
-import { getBlogs } from "@/supabase/write/write";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getBlogs, postBlogs } from "@/supabase/write/write";
 import BlogBox from "../homePage/components/BlogBox/BlogBox";
 import BlogCardHeader from "../homePage/components/BlogCardHeader/BlogCardHeader";
 import BlogCardInfo from "../homePage/components/BlogCardInfo/BlogCardInfo";
@@ -17,14 +16,11 @@ import BlogCardContent from "../homePage/components/BlogCardContent/BlogCardCont
 import { useProfileInfo } from "@/react-query/profileInfo";
 import { TabsList, Tabs, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
-
-type writeBlogFormValues = {
-  title_ka: string;
-  title_en: string;
-  description_ka: string;
-  description_en: string;
-  image_url: null | File;
-};
+import { writeBlogFormValues } from "./WritePage.types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { blogCreateSchema } from "./schema";
+import { AlertDestructive } from "@/components/error/errorAlert";
+import { Alert } from "@/components/ui/alert";
 
 const createBlogDefaultValues = {
   title_ka: "",
@@ -40,9 +36,15 @@ const WritePage = () => {
     useProfileInfo(user?.id).data?.full_name || user?.email;
   const authorFullNameKa =
     useProfileInfo(user?.id).data?.full_name_ka || user?.email;
-  console.log(authorFullName);
   const { t } = useTranslation();
-  const { control, handleSubmit } = useForm<writeBlogFormValues>({
+
+  const {
+    control,
+    handleSubmit,
+    reset: resetHookForm,
+    formState: { errors },
+  } = useForm<writeBlogFormValues>({
+    resolver: zodResolver(blogCreateSchema),
     defaultValues: createBlogDefaultValues,
   });
   const { data: blogsData, refetch: refetchBlogs } = useQuery({
@@ -69,27 +71,25 @@ const WritePage = () => {
       hour12: false,
     });
   };
+  const {
+    isSuccess: createdSuccess,
+    mutate: createBlogMutate,
+    isError: isBlogCreateError,
+    error: BlogCreateError,
+  } = useMutation({
+    mutationKey: ["create-blog"],
+    mutationFn: postBlogs,
+    onSuccess: () => {
+      refetchBlogs();
+      resetHookForm();
+    },
+  });
 
   const onSubmit = (formValues: writeBlogFormValues) => {
-    if (formValues?.image_url) {
-      supabase.storage
-        .from("blog_images")
-        .upload(formValues.image_url?.name, formValues?.image_url)
-        .then((res) => {
-          return supabase.from("blogs").insert({
-            title_ka: formValues.title_ka,
-            title_en: formValues.title_en,
-            description_en: formValues.description_en,
-            description_ka: formValues.description_ka,
-            image_url: res.data?.fullPath,
-            user_id: user?.id,
-          });
-        })
-        .then((res) => console.log("created blog", res));
-      refetchBlogs();
-    }
+    const id = user?.id ?? "";
+    createBlogMutate({ formValues, id });
   };
-
+  const firstError = Object.values(errors).find((error) => error);
   return (
     <div className="flex w-full flex-col items-center gap-8 px-4">
       <Card className="mx-auto mt-12 min-w-[40rem]">
@@ -219,6 +219,22 @@ const WritePage = () => {
             </div>
 
             {/* <TagInput /> */}
+            {firstError && (
+              <AlertDestructive
+                alertDescription={firstError?.message as string}
+              />
+            )}
+            {isBlogCreateError && (
+              <AlertDestructive
+                alertTitle={BlogCreateError.name}
+                alertDescription={BlogCreateError.message}
+              />
+            )}
+            {createdSuccess && (
+              <Alert className="mx-auto border-green-800 text-center text-green-800">
+                Blog Created Successfuly
+              </Alert>
+            )}
             <Button
               onClick={handleSubmit(onSubmit)}
               className="mx-auto flex max-w-72"

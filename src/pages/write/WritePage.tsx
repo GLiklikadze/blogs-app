@@ -13,13 +13,17 @@ import BlogCardContent from "../homePage/components/BlogCardContent/BlogCardCont
 import { useProfileInfo } from "@/react-query/profileInfo";
 import { TabsList, Tabs, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
-import { writeBlogFormValues } from "./WritePage.types";
+import { blogsData, writeBlogFormValues } from "./WritePage.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { blogCreateSchema } from "./schema";
 import { AlertDestructive } from "@/components/error/errorAlert";
-import { Alert } from "@/components/ui/alert";
 import { useBlogsData, usePostBlogs } from "@/react-query/writePage";
 import { calculateReadTime, getFormattedDate } from "./writeUtils";
+import { Filter } from "lucide-react";
+import { useRef } from "react";
+// import { useSearchParams } from "react-router-dom";
+// import qs from "qs";
+// import { useEffect } from "react";
 
 const createBlogDefaultValues = {
   title_ka: "",
@@ -28,35 +32,69 @@ const createBlogDefaultValues = {
   description_en: "",
   image_url: null,
 };
+const blogFilterDefaultValues = {
+  searchText: "",
+};
+type blogFilter = {
+  searchText: string;
+};
 
 const WritePage = () => {
   const { user } = useAuthContext();
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const parsedQueryParams = qs.parse(searchParams.toString());
 
   const authorFullName =
     useProfileInfo(user?.id).data?.full_name || user?.email;
   const authorFullNameKa =
     useProfileInfo(user?.id).data?.full_name_ka || user?.email;
 
-  const { blogsData, isBlogsLoading, refetchBlogs } = useBlogsData();
-
   const { t } = useTranslation();
-
   const {
     control,
     handleSubmit,
     reset: resetHookForm,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<writeBlogFormValues>({
     resolver: zodResolver(blogCreateSchema),
     defaultValues: createBlogDefaultValues,
   });
+  const { control: searchControl, watch } = useForm<blogFilter>({
+    defaultValues: blogFilterDefaultValues,
+  });
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const searchObj = watch();
+
+  const { blogsData, isBlogsLoading, refetchBlogs, isSuccess } =
+    useBlogsData(searchObj);
+
+  const handleReset = () => {
+    resetHookForm();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const {
     createBlogMutate,
     createdSuccess,
     BlogCreateError,
     isBlogCreateError,
-  } = usePostBlogs(refetchBlogs, resetHookForm);
+  } = usePostBlogs(refetchBlogs, handleReset);
+
+  // const onSearchSubmit = (data) => {
+  //   refetchBlogs(data);
+  // };
+  // useEffect(() => {
+  //   setSearchParams(
+  //     qs.stringify(searchObj, {
+  //       skipNulls: true,
+  //       filter: (_, value) => {
+  //         return value || undefined;
+  //       },
+  //     }),
+  //   );
+  // }, [searchObj, setSearchParams]);
 
   const onSubmit = (formValues: writeBlogFormValues) => {
     const id = user?.id ?? "";
@@ -185,6 +223,7 @@ const WritePage = () => {
                         const file = e.target.files?.[0];
                         onChange(file);
                       }}
+                      ref={fileInputRef}
                     />
                   );
                 }}
@@ -203,10 +242,10 @@ const WritePage = () => {
                 alertDescription={BlogCreateError?.message || ""}
               />
             )}
-            {createdSuccess && (
-              <Alert className="mx-auto border-green-800 text-center text-green-800">
+            {createdSuccess && !isDirty && (
+              <div className="mx-auto w-1/2 text-center text-green-800">
                 Blog Created Successfuly
-              </Alert>
+              </div>
             )}
             <Button
               onClick={handleSubmit(onSubmit)}
@@ -217,45 +256,73 @@ const WritePage = () => {
           </div>
         </CardContent>
       </Card>
+      <div className="space-b flex flex-row items-center gap-4">
+        <Label className="whitespace-nowrap text-base font-bold">
+          {t("write-page.filter-label")}
+        </Label>
+        <Controller
+          control={searchControl}
+          name="searchText"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Input
+                className="h-12 w-60 border-2"
+                name="searchText"
+                id="search-text"
+                value={value}
+                onChange={onChange}
+                type="text"
+                placeholder={t("write-page.filter-placeholder")}
+              />
+            );
+          }}
+        />
+        {/* <Button onClick={handleSearchSubmit(onSearchSubmit)}>
+          Search Blog
+        </Button> */}
+        <Filter size="2rem" />
+      </div>
       <section className="max-w-[50rem] space-y-8">
-        {blogsData?.map((blog) => {
-          const blogImageUrl = blog?.image_url
-            ? `${import.meta.env.VITE_SUPABASE_BLOG_IMAGES_STORAGE_URL}/${blog?.image_url}`
-            : "";
-          const {
-            created_at,
-            description_en,
-            description_ka,
-            id,
-            title_en,
-            title_ka,
-            user_id,
-          } = blog;
+        {isSuccess &&
+          //@ts-expect-error {}error
+          blogsData?.map((blog: blogsData) => {
+            const blogImageUrl = blog?.image_url
+              ? `${import.meta.env.VITE_SUPABASE_BLOG_IMAGES_STORAGE_URL}/${blog?.image_url}`
+              : "";
+            const {
+              created_at,
+              description_en,
+              description_ka,
+              id,
+              title_en,
+              title_ka,
+              user_id,
+            } = blog;
 
-          return isBlogsLoading ? (
-            "Loading Blogs"
-          ) : (
-            <BlogBox key={id}>
-              <BlogCardHeader
-                imgSrc={blogImageUrl}
-                headingText={title_en ?? ""}
-                headingTextKa={title_ka ?? ""}
-              />
-              <BlogCardInfo
-                author={authorFullName ?? ""}
-                authorKa={authorFullNameKa ?? ""}
-                date={getFormattedDate(created_at)}
-                dateKa={getFormattedDate(created_at)}
-                timeToRead={calculateReadTime(description_en ?? "")}
-                authorId={user_id ?? ""}
-              />
-              <BlogCardContent
-                blogContent={description_en ?? ""}
-                blogContentKa={description_ka ?? ""}
-              />
-            </BlogBox>
-          );
-        })}
+            return isBlogsLoading ? (
+              "Loading Blogs"
+            ) : (
+              <BlogBox key={id}>
+                <BlogCardHeader
+                  imgSrc={blogImageUrl}
+                  headingText={title_en ?? ""}
+                  headingTextKa={title_ka ?? ""}
+                />
+                <BlogCardInfo
+                  author={authorFullName ?? ""}
+                  authorKa={authorFullNameKa ?? ""}
+                  date={getFormattedDate(created_at)}
+                  dateKa={getFormattedDate(created_at)}
+                  timeToRead={calculateReadTime(description_en ?? "")}
+                  authorId={user_id ?? ""}
+                />
+                <BlogCardContent
+                  blogContent={description_en ?? ""}
+                  blogContentKa={description_ka ?? ""}
+                />
+              </BlogBox>
+            );
+          })}
       </section>
     </div>
   );

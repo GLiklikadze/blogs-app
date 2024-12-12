@@ -7,5 +7,8 @@
   "blog-content-en": "Content (Eng)",
   "blog-content-ka": "Content (Geo)",
   "blog-image": "Image",
-  "publish-button": "Publish Blog"
+  "publish-button": "Publish Blog",
+  "filter-label": "Search",
+  "filter-placeholder": "Title (Eng)",
+  "created-success-msg": "Blog Created Successfuly"
 }

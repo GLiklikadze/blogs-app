@@ -1,14 +1,31 @@
 import { supabase } from "../supabaseClient";
 
-export const getBlogs = async () => {
+export const getBlogs = async (searchText: string = "") => {
   try {
-    const { data } = await supabase.from("blogs").select("*").throwOnError();
+    const { data } = await supabase
+      .from("blogs")
+      .select("*")
+      .like("title_en", `%${searchText}%`)
+      .throwOnError();
     return data;
   } catch (err) {
     console.error("Error during get profile info:", err);
     throw err;
   }
 };
+// export const Blogs = async (searchText: string = "") => {
+//   try {
+//     const { data } = await supabase
+//       .from("blogs")
+//       .select("*")
+//       .like("title_en", `%${searchText}%`)
+//       .throwOnError();
+//     return data;
+//   } catch (err) {
+//     console.error("Error during get profile info:", err);
+//     throw err;
+//   }
+// };
 export type writeBlogFormValues = {
   title_ka: string;
   title_en: string;
@@ -48,7 +65,6 @@ export const postBlogs = async ({
     if (error) {
       throw new Error(`Blog insertion failed: ${error.message}`);
     }
-
     console.log("Created blog", data);
   } catch (err) {
     console.error("Error during post blog:", err);

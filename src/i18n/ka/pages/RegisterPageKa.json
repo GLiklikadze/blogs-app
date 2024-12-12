@@ -12,5 +12,5 @@
   "email-invalid-pattern": "ელ.ფოსტის ფორმატი არასწორია",
   "password-required-error": "პაროლი სავალდებულოა",
   "password-minLength-error": "პაროლი უნდა შეადგენდეს მინ. 5 სიმბოლოს",
-  "password-maxLength-error": "პაროლი უნდა შეადგენდეს მაქს. 5 სიმბოლოს"
+  "password-maxLength-error": "პაროლი უნდა შეადგენდეს მაქს. 25 სიმბოლოს"
 }

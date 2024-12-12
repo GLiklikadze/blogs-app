@@ -66,10 +66,10 @@ const RegisterPage = () => {
                   name="email"
                   control={control}
                   rules={{
-                    required: t("register-page.email-required-error"),
+                    required: "email-required-error",
                     pattern: {
                       value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                      message: t("login-page.email-invalid-pattern"),
+                      message: "email-invalid-pattern",
                     },
                   }}
                   render={({ field: { value, onChange, onBlur } }) => {
@@ -88,7 +88,7 @@ const RegisterPage = () => {
                 />
                 {errors.email && (
                   <div className="mr-10 mt-2 text-red-700">
-                    {errors?.email.message}
+                    {t(`register-page.${errors?.email.message}`)}
                   </div>
                 )}
               </div>
@@ -103,14 +103,14 @@ const RegisterPage = () => {
                   name="password"
                   control={control}
                   rules={{
-                    required: t("register-page.password-required-error"),
+                    required: "password-required-error",
                     minLength: {
                       value: 5,
-                      message: t("register-page.password-minLength-error"),
+                      message: "password-minLength-error",
                     },
                     maxLength: {
                       value: 25,
-                      message: t("register-page.password-maxLength-error"),
+                      message: "password-maxLength-error",
                     },
                   }}
                   render={({ field: { onChange, value, onBlur } }) => {
@@ -128,7 +128,7 @@ const RegisterPage = () => {
                 />
                 {errors.password && (
                   <div className="mr-10 mt-2 text-red-700">
-                    {errors?.password.message}
+                    {t(`register-page.${errors?.password.message}`)}
                   </div>
                 )}
               </div>

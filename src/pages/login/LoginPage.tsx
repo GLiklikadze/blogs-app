@@ -62,10 +62,10 @@ const LoginPage = () => {
               name="email"
               control={control}
               rules={{
-                required: t("login-page.email-required-error"),
+                required: "email-required-error",
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: t("login-page.email-invalid-pattern"),
+                  message: "email-invalid-pattern",
                 },
               }}
               render={({ field: { onChange, value, onBlur } }) => {
@@ -84,7 +84,7 @@ const LoginPage = () => {
             />
             {errors.email && (
               <div className="mr-10 mt-2 text-red-700">
-                {errors?.email.message}
+                {t(`login-page.${errors?.email.message}`)}
               </div>
             )}
           </div>
@@ -105,14 +105,14 @@ const LoginPage = () => {
               name="password"
               control={control}
               rules={{
-                required: t("login-page.password-required-error"),
+                required: "password-required-error",
                 minLength: {
                   value: 5,
-                  message: t("login-page.password-minLength-error"),
+                  message: "password-minLength-error",
                 },
                 maxLength: {
                   value: 25,
-                  message: t("login-page.password-maxLength-error"),
+                  message: "password-maxLength-error",
                 },
               }}
               render={({ field: { onChange, value, onBlur } }) => {
@@ -130,7 +130,7 @@ const LoginPage = () => {
             />
             {errors.password && (
               <div className="mr-10 mt-2 text-red-700">
-                {errors?.password.message}
+                {t(`login-page.${errors?.password.message}`)}
               </div>
             )}
           </div>
@@ -151,7 +151,7 @@ const LoginPage = () => {
           </div>
         )}
         <div className="mt-4 text-center text-sm">
-          {t("login-page.sing-up-label")}
+          {t("login-page.sing-up-label")}{" "}
           <Link to="/register" className="text-primary underline">
             {t("login-page.sing-up-link")}
           </Link>

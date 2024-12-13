@@ -7,5 +7,10 @@
   "register-confirm-password-label": "Confirm Password",
   "sign-up-button": "Sign Up",
   "sign-up-message": "Already have an account? ",
-  "log-in-link": "Log in"
+  "log-in-link": "Log in",
+  "email-required-error": "Email is required",
+  "email-invalid-pattern": "Invalid email format",
+  "password-required-error": "Password is required",
+  "password-minLength-error": "Password Min Length is 5 symbol",
+  "password-maxLength-error": "Password Max Length is 25 symbol"
 }

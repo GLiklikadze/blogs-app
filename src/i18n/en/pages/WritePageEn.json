@@ -1,0 +1,14 @@
+{
+  "page-header": "Write A New Blog",
+  "tab-geo": "Geo",
+  "tab-eng": "Eng",
+  "blog-title-en": "Title (Eng)",
+  "blog-title-ka": "Title (Geo)",
+  "blog-content-en": "Content (Eng)",
+  "blog-content-ka": "Content (Geo)",
+  "blog-image": "Image",
+  "publish-button": "Publish Blog",
+  "filter-label": "Search",
+  "filter-placeholder": "Title (Eng)",
+  "created-success-msg": "Blog Created Successfuly"
+}

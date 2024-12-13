@@ -7,5 +7,15 @@
   "avatar-url-label": "Avatar URL",
   "phone-number-label": "Mob Phone",
   "edit-button": "Edit Information",
-  "sign-out-button": "Sign Out"
+  "sign-out-button": "Sign Out",
+  "full-name-ka-required-error": "Full Name (Geo) is required",
+  "full-name-ka-minLength-error": "Full Name (Geo) must be at least 3 characters long",
+  "full-name-ka-maxLength-error": "Full Name (Geo) must be max 25 characters long",
+  "full-name-en-required-error": "Full Name (Eng) is required",
+  "full-name-en-minLength-error": "Full Name (Eng) must be at least 3 characters long",
+  "full-name-en-maxLength-error": "Full Name (Eng) must be max 25 characters long",
+  "avatar-required-error": "Avatar URL is required",
+  "phone-number-required-error": "Phone Number is required",
+  "phone-number-minLength-error": "Phone number must be at least 6 digits long",
+  "phone-number-maxLength-error": "Phone number must be max 14 digits long"
 }

@@ -10,10 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
-import { ChangeEvent, FormEvent, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { register } from "@/supabase/auth/httpRegister";
 import { AlertDestructive } from "@/components/error/errorAlert";
+import { Controller, useForm } from "react-hook-form";
+import { RegisterFormValues } from "./RegisterPage.types";
 
 const initialRegisterObj = {
   // full_name: "",
@@ -21,7 +22,14 @@ const initialRegisterObj = {
   password: "",
 };
 const RegisterPage = () => {
-  const [registerData, setRegisterData] = useState(initialRegisterObj);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    defaultValues: initialRegisterObj,
+    mode: "onBlur",
+  });
   const navigate = useNavigate();
 
   const { mutate, isPending, isError, error, isSuccess } = useMutation({
@@ -29,21 +37,10 @@ const RegisterPage = () => {
     mutationFn: register,
     onSuccess: () => navigate("/login"),
   });
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setRegisterData((prevRegisterData) => {
-      return {
-        ...prevRegisterData,
-        [name]: value,
-      };
-    });
+  const onSubmit = (fieldValues: RegisterFormValues) => {
+    console.log(fieldValues);
+    mutate(fieldValues);
   };
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setRegisterData(initialRegisterObj);
-    mutate(registerData);
-  };
-
   const { t } = useTranslation();
 
   return (
@@ -58,94 +55,113 @@ const RegisterPage = () => {
               {t("register-page.register-message")}
             </CardDescription>
           </CardHeader>
-          <form onSubmit={handleSubmit}>
-            <CardContent>
-              <div className="grid gap-4">
-                {/* <div className="grid gap-2">
-                  <Label htmlFor="name">
-                    {" "}
-                    {t("register-page.register-name-label")}
-                  </Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    name="full_name"
-                    value={registerData.full_name}
-                    onChange={handleChange}
-                    placeholder="John Doe"
-                    required
-                  />
-                </div> */}
-
-                <div className="grid gap-2">
-                  <Label htmlFor="email">
-                    {" "}
-                    {t("register-page.register-email-label")}
-                  </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={registerData.email}
-                    onChange={handleChange}
-                    placeholder="m@example.com"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">
-                      {" "}
-                      {t("register-page.register-password-label")}
-                    </Label>
+          <CardContent>
+            <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="email">
+                  {" "}
+                  {t("register-page.register-email-label")}
+                </Label>
+                <Controller
+                  name="email"
+                  control={control}
+                  rules={{
+                    required: "email-required-error",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "email-invalid-pattern",
+                    },
+                  }}
+                  render={({ field: { value, onChange, onBlur } }) => {
+                    return (
+                      <Input
+                        id="email"
+                        type="email"
+                        value={value}
+                        className={errors.email && "border-red-500"}
+                        onChange={onChange}
+                        placeholder="m@example.com"
+                        onBlur={onBlur}
+                      />
+                    );
+                  }}
+                />
+                {errors.email && (
+                  <div className="mr-10 mt-2 text-red-700">
+                    {t(`register-page.${errors?.email.message}`)}
                   </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    name="password"
-                    value={registerData.password}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                {/* <div className="grid gap-2">
+                )}
+              </div>
+              <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="confirmPassword">
+                  <Label htmlFor="password">
                     {" "}
-                    {t("register-page.register-confirm-password-label")}
+                    {t("register-page.register-password-label")}
                   </Label>
                 </div>
-                <Input id="confirmPassword" type="password" required />
-              </div> */}
-                <Button type="submit" className="w-full">
-                  {isPending
-                    ? "submiting.."
-                    : t("register-page.sign-up-button")}
-                </Button>
+                <Controller
+                  name="password"
+                  control={control}
+                  rules={{
+                    required: "password-required-error",
+                    minLength: {
+                      value: 5,
+                      message: "password-minLength-error",
+                    },
+                    maxLength: {
+                      value: 25,
+                      message: "password-maxLength-error",
+                    },
+                  }}
+                  render={({ field: { onChange, value, onBlur } }) => {
+                    return (
+                      <Input
+                        id="password"
+                        type="password"
+                        className={errors.password && "border-red-500"}
+                        onChange={onChange}
+                        value={value}
+                        onBlur={onBlur}
+                      />
+                    );
+                  }}
+                />
+                {errors.password && (
+                  <div className="mr-10 mt-2 text-red-700">
+                    {t(`register-page.${errors?.password.message}`)}
+                  </div>
+                )}
               </div>
+              <Button
+                type="submit"
+                className="w-full"
+                onClick={handleSubmit(onSubmit)}
+              >
+                {isPending ? "submiting.." : t("register-page.sign-up-button")}
+              </Button>
+            </div>
 
-              {isError && (
-                <div className="mt-4">
-                  <AlertDestructive
-                    alertTitle={error.name}
-                    alertDescription={error?.message}
-                  />
-                </div>
-              )}
-              {isSuccess && (
-                <p className="text-center text-sm font-normal text-lime-700">
-                  Sign-up successful
-                </p>
-              )}
-              <div className="mt-4 text-center text-sm">
-                {t("register-page.sign-up-message")}
-                <Link to="/login" className="text-primary underline">
-                  {t("register-page.log-in-link")}
-                </Link>
+            {isError && (
+              <div className="mt-4">
+                <AlertDestructive
+                  alertTitle={error.name}
+                  alertDescription={error?.message}
+                />
               </div>
-            </CardContent>
-          </form>
+            )}
+            {isSuccess && (
+              <p className="text-center text-sm font-normal text-lime-700">
+                Sign-up successful
+              </p>
+            )}
+            <div className="mt-4 text-center text-sm">
+              {t("register-page.sign-up-message")}
+              <Link to="/login" className="text-primary underline">
+                {t("register-page.log-in-link")}
+              </Link>
+            </div>
+          </CardContent>
+          =
         </Card>
       </div>
     </div>

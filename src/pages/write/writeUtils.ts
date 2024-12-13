@@ -1,3 +1,7 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+
 export const calculateReadTime = (text: string) => {
   const wordsPerMinute = 200;
   const totalWords = text?.trim().split(/\s+/).length;
@@ -6,14 +10,16 @@ export const calculateReadTime = (text: string) => {
 
   return readTime;
 };
-export const getFormattedDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+
+export const getFormattedDate = (date: string) => {
+  const dateNow = dayjs();
+  const givenDate = dayjs(date);
+
+  const hoursdifference = dateNow.diff(givenDate, "hours");
+
+  if (hoursdifference < 24) {
+    return givenDate.from(dateNow);
+  } else {
+    return givenDate.format("HH:mm - DD/MM/YYYY");
+  }
 };

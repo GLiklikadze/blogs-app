@@ -6,24 +6,20 @@ import { Textarea } from "@/components/ui/textarea";
 // import TagInput from "@/components/ui/tagInput";
 import { Controller, useForm } from "react-hook-form";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
-import BlogBox from "../homePage/components/BlogBox/BlogBox";
-import BlogCardHeader from "../homePage/components/BlogCardHeader/BlogCardHeader";
-import BlogCardInfo from "../homePage/components/BlogCardInfo/BlogCardInfo";
-import BlogCardContent from "../homePage/components/BlogCardContent/BlogCardContent";
-import { useProfileInfo } from "@/react-query/profileInfo";
 import { TabsList, Tabs, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
-import { blogsData, writeBlogFormValues } from "./WritePage.types";
+import { blogFilter, writeBlogFormValues } from "./WritePage.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { blogCreateSchema } from "./schema";
 import { AlertDestructive } from "@/components/error/errorAlert";
 import { useBlogsData, usePostBlogs } from "@/react-query/writePage";
-import { calculateReadTime, getFormattedDate } from "./writeUtils";
 import { Filter } from "lucide-react";
-import { useRef } from "react";
-// import { useSearchParams } from "react-router-dom";
-// import qs from "qs";
-// import { useEffect } from "react";
+import { useMemo, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
+import qs from "qs";
+import { useEffect } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
+import { BlogsList } from "./components/BlogsList";
 
 const createBlogDefaultValues = {
   title_ka: "",
@@ -32,22 +28,14 @@ const createBlogDefaultValues = {
   description_en: "",
   image_url: null,
 };
-const blogFilterDefaultValues = {
-  searchText: "",
-};
-type blogFilter = {
-  searchText: string;
-};
+// const blogFilterDefaultValues = {
+//   searchText: "",
+// };
 
 const WritePage = () => {
   const { user } = useAuthContext();
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const parsedQueryParams = qs.parse(searchParams.toString());
-
-  const authorFullName =
-    useProfileInfo(user?.id).data?.full_name || user?.email;
-  const authorFullNameKa =
-    useProfileInfo(user?.id).data?.full_name_ka || user?.email;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const parsedQueryParams = qs.parse(searchParams.toString());
 
   const { t } = useTranslation();
   const {
@@ -60,13 +48,16 @@ const WritePage = () => {
     defaultValues: createBlogDefaultValues,
   });
   const { control: searchControl, watch } = useForm<blogFilter>({
-    defaultValues: blogFilterDefaultValues,
+    defaultValues: parsedQueryParams,
   });
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const searchObj = watch();
+  const memoizedSearchObj = useMemo(() => searchObj, [searchObj]);
+  const debouncedText = useDebounce(memoizedSearchObj?.searchText, 500);
 
   const { blogsData, isBlogsLoading, refetchBlogs, isSuccess } =
-    useBlogsData(searchObj);
+    useBlogsData(debouncedText);
 
   const handleReset = () => {
     resetHookForm();
@@ -74,7 +65,7 @@ const WritePage = () => {
       fileInputRef.current.value = "";
     }
   };
-
+  console.log(11);
   const {
     createBlogMutate,
     createdSuccess,
@@ -85,16 +76,22 @@ const WritePage = () => {
   // const onSearchSubmit = (data) => {
   //   refetchBlogs(data);
   // };
-  // useEffect(() => {
-  //   setSearchParams(
-  //     qs.stringify(searchObj, {
-  //       skipNulls: true,
-  //       filter: (_, value) => {
-  //         return value || undefined;
-  //       },
-  //     }),
-  //   );
-  // }, [searchObj, setSearchParams]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSearchParams(
+        qs.stringify(
+          { searchText: debouncedText },
+          {
+            skipNulls: true,
+            filter: (_, value) => {
+              return value || undefined;
+            },
+          },
+        ),
+      );
+    }
+  }, [isSuccess, debouncedText, setSearchParams]);
 
   const onSubmit = (formValues: writeBlogFormValues) => {
     const id = user?.id ?? "";
@@ -283,46 +280,12 @@ const WritePage = () => {
         <Filter size="2rem" />
       </div>
       <section className="max-w-[50rem] space-y-8">
-        {isSuccess &&
-          //@ts-expect-error {}error
-          blogsData?.map((blog: blogsData) => {
-            const blogImageUrl = blog?.image_url
-              ? `${import.meta.env.VITE_SUPABASE_BLOG_IMAGES_STORAGE_URL}/${blog?.image_url}`
-              : "";
-            const {
-              created_at,
-              description_en,
-              description_ka,
-              id,
-              title_en,
-              title_ka,
-              user_id,
-            } = blog;
-
-            return isBlogsLoading ? (
-              "Loading Blogs"
-            ) : (
-              <BlogBox key={id}>
-                <BlogCardHeader
-                  imgSrc={blogImageUrl}
-                  headingText={title_en ?? ""}
-                  headingTextKa={title_ka ?? ""}
-                />
-                <BlogCardInfo
-                  author={authorFullName ?? ""}
-                  authorKa={authorFullNameKa ?? ""}
-                  date={getFormattedDate(created_at)}
-                  dateKa={getFormattedDate(created_at)}
-                  timeToRead={calculateReadTime(description_en ?? "")}
-                  authorId={user_id ?? ""}
-                />
-                <BlogCardContent
-                  blogContent={description_en ?? ""}
-                  blogContentKa={description_ka ?? ""}
-                />
-              </BlogBox>
-            );
-          })}
+        {isSuccess && (
+          <BlogsList
+            blogsData={blogsData ?? []}
+            isBlogsLoading={isBlogsLoading}
+          />
+        )}
       </section>
     </div>
   );

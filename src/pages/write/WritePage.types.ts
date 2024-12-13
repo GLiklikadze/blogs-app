@@ -6,12 +6,16 @@ export type writeBlogFormValues = {
   image_url: null | File;
 };
 export type blogsData = {
-  title_ka: string;
-  title_en: string;
-  description_ka: string;
-  description_en: string;
-  image_url: null | File;
   created_at: string;
-  id: string;
-  user_id: string;
+  description_en: string | null;
+  description_ka: string | null;
+  id: number;
+  image_url: string | null;
+  title_en: string | null;
+  title_ka: string | null;
+  user_id: string | null;
+};
+
+export type blogFilter = {
+  searchText: string;
 };

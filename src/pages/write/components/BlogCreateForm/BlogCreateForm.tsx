@@ -5,28 +5,11 @@ import { TabsList, Tabs, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { AlertDestructive } from "@/components/error/errorAlert";
-import {
-  Control,
-  Controller,
-  FieldErrors,
-  UseFormHandleSubmit,
-} from "react-hook-form";
-import { t } from "i18next";
-import { writeBlogFormValues } from "@/supabase/write/write";
-import { MutableRefObject } from "react";
-import { CustomFileInput } from "@/components/ui/customFileInput";
 
-type BlogCreateFormProps = {
-  control: Control<writeBlogFormValues>;
-  handleSubmit: UseFormHandleSubmit<writeBlogFormValues, undefined>;
-  onSubmit: (formValues: writeBlogFormValues) => void;
-  createdSuccess: boolean;
-  BlogCreateError: Error | null;
-  isBlogCreateError: boolean;
-  isDirty: boolean;
-  errors: FieldErrors<writeBlogFormValues>;
-  fileInputRef: MutableRefObject<HTMLInputElement | null>;
-};
+import { t } from "i18next";
+import { CustomFileInput } from "@/components/ui/customFileInput";
+import { BlogCreateFormProps } from "./BlogCreateForm.types";
+import { Controller } from "react-hook-form";
 
 export const BlogCreateForm: React.FC<BlogCreateFormProps> = ({
   control,

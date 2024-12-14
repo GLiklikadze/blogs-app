@@ -19,7 +19,7 @@ const CustomFileInput = React.forwardRef<
   };
 
   return (
-    <div className="flex max-h-11 w-full rounded-sm border">
+    <div className="flex max-h-9 w-full rounded-sm border">
       <div
         onClick={handleClick}
         className="focus-within:border-blue flex flex-grow cursor-pointer items-center gap-2 rounded-l-md bg-transparent pr-3 text-sm focus-within:border focus-within:ring-2 hover:border-gray-400"

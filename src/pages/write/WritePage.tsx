@@ -1,6 +1,5 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-// import TagInput from "@/components/ui/tagInput";
 import { Controller, useForm } from "react-hook-form";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
 import { useTranslation } from "react-i18next";
@@ -15,7 +14,7 @@ import qs from "qs";
 import { useEffect } from "react";
 import { useDebounce } from "@uidotdev/usehooks";
 import { BlogsList } from "./components/BlogsList";
-import { BlogCreateForm } from "./components/BlogCreateForm";
+import { BlogCreateForm } from "./components/BlogCreateForm/BlogCreateForm";
 import { writeBlogFormValues } from "@/supabase/write/write";
 
 const createBlogDefaultValues = {
@@ -25,13 +24,15 @@ const createBlogDefaultValues = {
   description_en: "",
   image_url: null,
 };
-// const blogFilterDefaultValues = {
-//   searchText: "",
-// };
+const blogFilterDefaultValues = {
+  searchText: "",
+};
 
 const WritePage = () => {
   const { user } = useAuthContext();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams(
+    blogFilterDefaultValues,
+  );
   const parsedQueryParams = qs.parse(searchParams.toString());
 
   const { t } = useTranslation();
@@ -54,25 +55,21 @@ const WritePage = () => {
   const memoizedSearchObj = useMemo(() => searchObj, [searchObj]);
   const debouncedText = useDebounce(memoizedSearchObj?.searchText, 500);
 
-  const { blogsData, isBlogsLoading, refetchBlogs, isSuccess } =
-    useBlogsData(debouncedText);
-
   const handleReset = () => {
     resetHookForm();
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
+  const { blogsData, isBlogsLoading, refetchBlogs, isSuccess } =
+    useBlogsData(debouncedText);
+
   const {
     createBlogMutate,
     createdSuccess,
     BlogCreateError,
     isBlogCreateError,
   } = usePostBlogs(refetchBlogs, handleReset);
-
-  // const onSearchSubmit = (data) => {
-  //   refetchBlogs(data);
-  // };
 
   useEffect(() => {
     if (isSuccess) {

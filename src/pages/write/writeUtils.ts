@@ -1,6 +1,20 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ka";
 dayjs.extend(relativeTime);
+dayjs.locale("ka", {
+  relativeTime: {
+    future: "შემდეგ %s",
+    past: "%s წინ",
+    s: "წამები",
+    m: "1 წუთი",
+    mm: "%d წუთი",
+    h: "1 საათი",
+    hh: "%d საათი",
+    d: "1 დღე",
+    dd: "%d დღე",
+  },
+});
 
 export const calculateReadTime = (text: string) => {
   const wordsPerMinute = 200;

@@ -19,6 +19,8 @@ import RegisterPageKa from "@/i18n/ka/pages/RegisterPageKa.json";
 import RegisterPageEn from "@/i18n/en/pages/RegisterPageEn.json";
 import HeaderKa from "@/i18n/ka/components/HeaderKa.json";
 import HeaderEn from "@/i18n/en/components/HeaderEn.json";
+import customFileInputKa from "@/i18n/ka/components/customFileInputKa.json";
+import customFileInputEn from "@/i18n/en/components/customFileInputEn.json";
 import modeToggleKa from "@/i18n/ka/components/modeToggleKa.json";
 import modeToggleEn from "@/i18n/en/components/modeToggleEn.json";
 import footerKa from "@/i18n/ka/components/footerKa.json";
@@ -39,6 +41,7 @@ i18n.use(initReactI18next).init({
         "about-page": AboutPageKa,
         "profile-page": ProfilePageKa,
         "write-page": WritePageKa,
+        "file-input": customFileInputKa,
       },
     },
     en: {
@@ -54,6 +57,7 @@ i18n.use(initReactI18next).init({
         "about-page": AboutPageEn,
         "profile-page": ProfilePageEn,
         "write-page": WritePageEn,
+        "file-input": customFileInputEn,
       },
     },
   },

@@ -3,12 +3,10 @@ import { Input } from "@/components/ui/input";
 // import TagInput from "@/components/ui/tagInput";
 import { Controller, useForm } from "react-hook-form";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
-
 import { useTranslation } from "react-i18next";
 import { blogFilter } from "./WritePage.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { blogCreateSchema } from "./schema";
-
 import { useBlogsData, usePostBlogs } from "@/react-query/writePage";
 import { Filter } from "lucide-react";
 import { useMemo, useRef } from "react";
@@ -65,7 +63,6 @@ const WritePage = () => {
       fileInputRef.current.value = "";
     }
   };
-  console.log(11);
   const {
     createBlogMutate,
     createdSuccess,

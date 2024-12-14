@@ -14,6 +14,7 @@ import {
 import { t } from "i18next";
 import { writeBlogFormValues } from "@/supabase/write/write";
 import { MutableRefObject } from "react";
+import { CustomFileInput } from "@/components/ui/customFileInput";
 
 type BlogCreateFormProps = {
   control: Control<writeBlogFormValues>;
@@ -153,7 +154,7 @@ export const BlogCreateForm: React.FC<BlogCreateFormProps> = ({
               name="image_url"
               render={({ field: { onChange } }) => {
                 return (
-                  <Input
+                  <CustomFileInput
                     id="image_url"
                     type="file"
                     onChange={(e) => {
@@ -181,7 +182,7 @@ export const BlogCreateForm: React.FC<BlogCreateFormProps> = ({
           )}
           {createdSuccess && !isDirty && (
             <div className="mx-auto w-1/2 text-center text-green-800">
-              Blog Created Successfuly
+              {t("write-page.created-success-msg")}
             </div>
           )}
           <Button

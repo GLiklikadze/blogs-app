@@ -6,8 +6,7 @@ import NavbarSearch from "./components/search/NavbarSearch";
 import { useTranslation, Trans } from "react-i18next";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { useQuery } from "@tanstack/react-query";
-import { getProfileInfo } from "@/supabase/profile/profile";
+import { useProfileInfo } from "@/react-query/query/profile/profile-query";
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
@@ -18,11 +17,13 @@ const Header: React.FC = () => {
       ? "border-blue-500 font-semibold text-primary"
       : "font-semibold text-gray-500 hover:text-primary";
   };
-  const { data: receivedProfileData } = useQuery({
-    queryKey: ["getprofilePhoto", user?.id],
-    queryFn: () => getProfileInfo(user?.id as string),
-    enabled: !!user,
-  });
+
+  // const { data: receivedProfileData } = useQuery({
+  //   queryKey: ["getprofilePhoto", user?.id],
+  //   queryFn: () => getProfileInfo(user?.id as string),
+  //   enabled: !!user,
+  // });
+  const { data: receivedProfileData } = useProfileInfo(user?.id);
 
   return (
     <header className="h-16 border-b border-primary">

@@ -4,7 +4,7 @@ import BlogCardHeader from "@/pages/homePage/components/BlogCardHeader/BlogCardH
 import BlogCardInfo from "@/pages/homePage/components/BlogCardInfo/BlogCardInfo";
 import { getFormattedDate, calculateReadTime } from "../writeUtils";
 import { blogsData } from "../WritePage.types";
-import { useProfileInfo } from "@/react-query/profileInfo";
+import { useProfileInfo } from "@/react-query/query/profile/profile-query";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
 import { BlogListTypes } from "./BlogsList.types";
 

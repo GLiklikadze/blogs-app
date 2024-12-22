@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { blogFilter } from "./WritePage.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { blogCreateSchema } from "./schema";
-import { useBlogsData, usePostBlogs } from "@/react-query/writePage";
+import { useBlogsData } from "@/react-query/query/blogs/blogs-query";
 import { Filter } from "lucide-react";
 import { useMemo, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -16,6 +16,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { BlogsList } from "./components/BlogsList";
 import { BlogCreateForm } from "./components/BlogCreateForm/BlogCreateForm";
 import { writeBlogFormValues } from "@/supabase/write/write";
+import { usePostBlogs } from "@/react-query/mutation/blogs/blogs-mutation";
 
 const createBlogDefaultValues = {
   title_ka: "",
@@ -61,14 +62,18 @@ const WritePage = () => {
       fileInputRef.current.value = "";
     }
   };
-  const { blogsData, isBlogsLoading, refetchBlogs, isSuccess } =
-    useBlogsData(debouncedText);
+  const {
+    data: blogsData,
+    isLoading: isBlogsLoading,
+    refetch: refetchBlogs,
+    isSuccess,
+  } = useBlogsData(debouncedText);
 
   const {
-    createBlogMutate,
-    createdSuccess,
-    BlogCreateError,
-    isBlogCreateError,
+    mutate: createBlogMutate,
+    isSuccess: createdSuccess,
+    error: BlogCreateError,
+    isError: isBlogCreateError,
   } = usePostBlogs(refetchBlogs, handleReset);
 
   useEffect(() => {

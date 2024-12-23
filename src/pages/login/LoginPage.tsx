@@ -31,12 +31,6 @@ const LoginPage = () => {
   });
   const { mutate, isError, error } = useLogin();
 
-  // const { mutate, isError, error } = useMutation({
-  //   mutationKey: ["login"],
-  //   mutationFn: login,
-  //   onSuccess: () => navigate("/"),
-  // });
-
   const onSubmit = (fieldValues: LoginFormValues) => {
     console.log(fieldValues);
     mutate(fieldValues);

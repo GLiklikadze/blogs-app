@@ -6,22 +6,9 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { AUTH_MUTATION_KEYS } from "./authMutationKeys.enum";
-import { PostgrestError, Session, User } from "@supabase/supabase-js";
+import { PostgrestError } from "@supabase/supabase-js";
 import { AUTH_PATHS } from "@/routes/auth/authPaths.enum";
-
-type UserResponse = {
-  user: User | null;
-  session: Session | null;
-};
-
-type LoginResult = {
-  user: User;
-  session: Session;
-};
-type httpRegisterProps = {
-  email: string;
-  password: string;
-};
+import { httpRegisterProps, LoginResult, UserResponse } from "./auth.types";
 
 export const useLogin = ({
   mutationOptions,

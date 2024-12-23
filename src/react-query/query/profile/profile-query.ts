@@ -6,16 +6,8 @@ import {
 import { getProfileInfo } from "@/supabase/profile/profile";
 import { PROFILE_QUERY_KEYS } from "./profileQueryKeys.enum";
 import { PostgrestError } from "@supabase/supabase-js";
+import { profileResponse } from "./profile.types";
 
-type profileResponse = {
-  avatar_url: string | null;
-  full_name: string | null;
-  full_name_ka: string | null;
-  id: string;
-  phone_number: string | null;
-  updated_at: string | null;
-  username: string | null;
-};
 export const useProfileInfo = (
   userId?: string,
   {

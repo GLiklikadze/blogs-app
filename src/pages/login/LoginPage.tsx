@@ -14,6 +14,7 @@ import { AlertDestructive } from "@/components/error/errorAlert";
 import { Controller, useForm } from "react-hook-form";
 import { LoginFormValues } from "./LoginPage.types";
 import { useLogin } from "@/react-query/mutation/auth/auth-mutation";
+import { AUTH_PATHS } from "@/routes/auth/authPaths.enum";
 
 const initialLoginObj = {
   email: "",
@@ -151,7 +152,10 @@ const LoginPage = () => {
         )}
         <div className="mt-4 text-center text-sm">
           {t("login-page.sing-up-label")}{" "}
-          <Link to="/register" className="text-primary underline">
+          <Link
+            to={`/${AUTH_PATHS.AUTH}/${AUTH_PATHS.REGISTER}`}
+            className="text-primary underline"
+          >
             {t("login-page.sing-up-link")}
           </Link>
         </div>

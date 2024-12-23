@@ -63,26 +63,7 @@ const ProfilePage = () => {
     }
   }, [receivedProfileData, reset]);
 
-  // const { mutate: mutateLogout } = useMutation({
-  //   mutationKey: ["logOut"],
-  //   mutationFn: logOut,
-  //   onSuccess: () => navigate("/login"),
-  // });
-
-  // const queryClient = useQueryClient();
-
   const { mutate: mutateLogout } = useLogOut();
-
-  // const { mutate: editProfileData } = useMutation({
-  //   mutationKey: ["fill-profile-info"],
-  //   mutationFn: fillProfileInfo,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({
-  //       queryKey: ["getprofilePhoto", user?.id],
-  //     });
-  //     refetchReceivedProfileData();
-  //   },
-  // });
 
   const { mutate: editProfileData } = useEditProfile(user?.id || "");
 

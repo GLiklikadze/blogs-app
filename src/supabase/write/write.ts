@@ -7,7 +7,7 @@ export const getBlogs = async (searchText: string = "") => {
       .select("*")
       .like("title_en", `%${searchText}%`)
       .throwOnError();
-    return data;
+    return data || [];
   } catch (err) {
     console.error("Error during get profile info:", err);
     throw err;

@@ -14,6 +14,7 @@ import { AlertDestructive } from "@/components/error/errorAlert";
 import { Controller, useForm } from "react-hook-form";
 import { RegisterFormValues } from "./RegisterPage.types";
 import { useRegister } from "@/react-query/mutation/auth/auth-mutation";
+import { AUTH_PATHS } from "@/routes/auth/authPaths.enum";
 
 const initialRegisterObj = {
   // full_name: "",
@@ -151,7 +152,10 @@ const RegisterPage = () => {
             )}
             <div className="mt-4 text-center text-sm">
               {t("register-page.sign-up-message")}
-              <Link to="/login" className="text-primary underline">
+              <Link
+                to={`/${AUTH_PATHS.AUTH}/${AUTH_PATHS.LOGIN}`}
+                className="text-primary underline"
+              >
                 {t("register-page.log-in-link")}
               </Link>
             </div>

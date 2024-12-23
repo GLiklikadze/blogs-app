@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { AUTH_PATHS } from "@/routes/auth/authPaths.enum";
 
 const AboutPage = () => {
   const { t } = useTranslation();
@@ -99,7 +100,7 @@ const AboutPage = () => {
             {t("about-page.join-us-text")}
           </p>
           <br />
-          <Link to="/register">
+          <Link to={`/${AUTH_PATHS.AUTH}/${AUTH_PATHS.REGISTER}`}>
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
               {t("about-page.start-register-button")}
             </Button>

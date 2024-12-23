@@ -7,6 +7,7 @@ import { useTranslation, Trans } from "react-i18next";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { useProfileInfo } from "@/react-query/query/profile/profile-query";
+import { AUTH_PATHS } from "@/routes/auth/authPaths.enum";
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
@@ -60,7 +61,7 @@ const Header: React.FC = () => {
             </Link>
           ) : (
             // <Button onClick={handleLogOut}>Log Out</Button>
-            <Link to="login">
+            <Link to={`${AUTH_PATHS.AUTH}/${AUTH_PATHS.LOGIN}`}>
               <Button>{t("header-nav.sign-in")}</Button>
             </Link>
           )}

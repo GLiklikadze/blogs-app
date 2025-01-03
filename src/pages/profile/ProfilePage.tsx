@@ -3,18 +3,17 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthContext } from "@/context/hooks/useAuthContext";
-import { logOut } from "@/supabase/auth/httpRegister";
-import { fillProfileInfo, getProfileInfo } from "@/supabase/profile/profile";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserRoundPen } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createAvatar } from "@dicebear/core";
 import { avataaars } from "@dicebear/collection";
 import { TabsList, Tabs, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { ProfileFormValues } from "./ProfilePage.types";
+import { useLogOut } from "@/react-query/mutation/auth/auth-mutation";
+import { useEditProfile } from "@/react-query/mutation/profile/profile-mutation";
+import { useProfileInfo } from "@/react-query/query/profile/profile-query";
 
 const initialPayload = {
   full_name: "",
@@ -38,19 +37,19 @@ const ProfilePage = () => {
 
   const { user } = useAuthContext();
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const full_name = watch("full_name");
   const full_name_ka = watch("full_name_ka");
   const avatar_url = watch("avatar_url");
   const phone_number = watch("phone_number");
 
-  const { data: receivedProfileData, refetch: refetchReceivedProfileData } =
-    useQuery({
-      queryKey: ["getprofileinfo", user?.id],
-      queryFn: () => getProfileInfo(user?.id as string),
-      enabled: !!user,
-    });
+  // const { data: receivedProfileData } = useQuery({
+  //   queryKey: ["getprofileinfo", user?.id],
+  //   queryFn: () => getProfileInfo(user?.id as string),
+  //   enabled: !!user,
+  // });
+
+  const { data: receivedProfileData } = useProfileInfo(user?.id);
 
   useEffect(() => {
     if (receivedProfileData) {
@@ -64,22 +63,9 @@ const ProfilePage = () => {
     }
   }, [receivedProfileData, reset]);
 
-  const { mutate: mutateLogout } = useMutation({
-    mutationKey: ["logOut"],
-    mutationFn: logOut,
-    onSuccess: () => navigate("/login"),
-  });
-  const queryClient = useQueryClient();
-  const { mutate: editProfileData } = useMutation({
-    mutationKey: ["fill-profile-info"],
-    mutationFn: fillProfileInfo,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["getprofilePhoto", user?.id],
-      });
-      refetchReceivedProfileData();
-    },
-  });
+  const { mutate: mutateLogout } = useLogOut();
+
+  const { mutate: editProfileData } = useEditProfile(user?.id || "");
 
   const handleToggleEdit = () => {
     setToggleEdit((prevToggleEdit) => !prevToggleEdit);

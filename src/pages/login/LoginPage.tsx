@@ -7,14 +7,14 @@ import {
 } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 import { Label } from "@/components/ui/label";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button/button";
-import { login } from "@/supabase/auth/httpRegister";
 import { AlertDestructive } from "@/components/error/errorAlert";
-import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { LoginFormValues } from "./LoginPage.types";
+import { useLogin } from "@/react-query/mutation/auth/auth-mutation";
+import { AUTH_PATHS } from "@/routes/auth/authPaths.enum";
 
 const initialLoginObj = {
   email: "",
@@ -29,13 +29,7 @@ const LoginPage = () => {
     defaultValues: initialLoginObj,
     mode: "onBlur",
   });
-  const navigate = useNavigate();
-
-  const { mutate, isError, error } = useMutation({
-    mutationKey: ["login"],
-    mutationFn: login,
-    onSuccess: () => navigate("/"),
-  });
+  const { mutate, isError, error } = useLogin();
 
   const onSubmit = (fieldValues: LoginFormValues) => {
     console.log(fieldValues);
@@ -152,7 +146,10 @@ const LoginPage = () => {
         )}
         <div className="mt-4 text-center text-sm">
           {t("login-page.sing-up-label")}{" "}
-          <Link to="/register" className="text-primary underline">
+          <Link
+            to={`/${AUTH_PATHS.AUTH}/${AUTH_PATHS.REGISTER}`}
+            className="text-primary underline"
+          >
             {t("login-page.sing-up-link")}
           </Link>
         </div>
